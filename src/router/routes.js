@@ -5,7 +5,7 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     meta: {
       breadcrumb: [
-        { name: '/' }
+        { name: 'Privace' }
       ]
     },
     children: [
@@ -14,7 +14,25 @@ const routes = [
         component: () => import('pages/Index.vue'),
         meta: {
           breadcrumb: [
-            { name: 'Index' }
+            { name: 'Home' }
+          ]
+        }
+      },
+      {
+        path: 'data-buyer',
+        component: () => import('pages/DataBuyer.vue'),
+        meta: {
+          breadcrumb: [
+            { name: 'Data Buyer' }
+          ]
+        }
+      },
+      {
+        path: 'data-owner',
+        component: () => import('pages/DataOwner.vue'),
+        meta: {
+          breadcrumb: [
+            { name: 'Data Owner' }
           ]
         }
       }

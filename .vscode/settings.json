@@ -3,5 +3,8 @@
   
   "eslint.validate": ["javascript", "javascriptreact", "typescript", "vue"],
   
-  "vetur.experimental.templateInterpolationService": true
+  "vetur.experimental.templateInterpolationService": true,
+  "cSpell.words": [
+    "Privace"
+  ]
 }

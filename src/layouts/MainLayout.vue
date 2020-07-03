@@ -2,65 +2,60 @@
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
       <q-toolbar>
-        <q-btn
+        <!-- <q-btn
           flat
           dense
           round
           icon="menu"
           aria-label="Menu"
           @click="leftDrawerOpen = !leftDrawerOpen"
-        />
+        /> -->
 
         <q-toolbar-title>
           <div class="q-pa-md q-gutter-sm">
             <q-breadcrumbs separator-color="white" active-color="white">
-              <q-breadcrumbs-el v-for="(b,idx) in breadcrumbList" :key="v+idx" label="l" />
+              <q-breadcrumbs-el v-for="(b,idx) in breadcrumbList" :key="idx" :label="b" />
             </q-breadcrumbs>
+            <!-- {{breadcrumbList}} -->
           </div>
           <!-- Quasar App -->
         </q-toolbar-title>
         <div class="q-pa-sm">
           <q-btn-group flat>
-            <q-btn color="purple" label="First" icon="timeline" />
-            <q-btn color="purple" label="Second" icon="visibility" />
+            <q-btn color="purple" :disable="currentRoute === '/data-owner'" to="/data-owner" label="数据所有者" icon="timeline" />
+            <q-btn color="purple" :disable="currentRoute === '/data-buyer'" to="/data-buyer" label="数据购买者" icon="visibility" />
           </q-btn-group>
         </div>
         <!-- <div>Quasar v{{ $q.version }}</div> -->
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered content-class="bg-grey-1">
-      <q-list>
-        <q-item-label header class="text-grey-8">Essential Links</q-item-label>
-        <EssentialLink v-for="link in essentialLinks" :key="link.title" v-bind="link" />
-
-      </q-list>
-    </q-drawer>
-
     <q-page-container>
-      <li v-for="(breadcrumb, idx) in breadcrumbList" :key="idx">{{breadcrumb.name}} 1</li>
+      <!-- <li v-for="(breadcrumb, idx) in breadcrumbList" :key="idx">{{breadcrumb.name}}</li> -->
       <router-view />
     </q-page-container>
   </q-layout>
 </template>
 
 <script>
-import EssentialLink from 'components/EssentialLink'
 
 export default {
   name: 'MainLayout',
 
   components: {
-    EssentialLink
+
   },
 
   watch: {
     $route () {
-      this.breadcrumbList = this.$route.meta.breadcrumb
+      this.currentRoute = this.$route.path
+      this.breadcrumbList = this.$route.matched.map(v => v.meta.breadcrumb[0].name)
     }
   },
   created () {
-    this.breadcrumbList = this.$route.meta.breadcrumb
+    this.currentRoute = this.$route.path
+    this.breadcrumbList = this.$route.matched.map(v => v.meta.breadcrumb[0].name)
+    console.log(this.breadcrumbList)
   },
 
   data () {
