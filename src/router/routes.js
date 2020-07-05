@@ -39,12 +39,16 @@ const routes = [
     ]
   },
   {
-    path: '/anonymous',
+    path: '/n',
     component: () => import('layouts/Unlogin.vue'),
     children: [
       {
         path: 'login',
         component: () => import('pages/Login.vue')
+      },
+      {
+        path: 'register',
+        component: () => import('pages/Register.vue')
       }
     ]
 
