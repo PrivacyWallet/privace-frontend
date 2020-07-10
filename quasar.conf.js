@@ -61,7 +61,7 @@ module.exports = function (/* ctx */) {
     supportIE: false,
 
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ts
-    supportTS: false,
+    supportTS: true,
 
     // https://quasar.dev/quasar-cli/cli-documentation/prefetch-feature
     // preFetch: true
