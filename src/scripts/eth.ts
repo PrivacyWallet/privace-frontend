@@ -102,6 +102,7 @@ export class EthTest implements EthInterface {
     date: Date;
     status: String;
     deployedContract: String;
+    result: String;
     transactions: { to: String; payment: Number; data: String }[];
   }[] {
     return [
@@ -121,8 +122,33 @@ export class EthTest implements EthInterface {
             payment: 0.5,
             data: 'data 2'
           }
-        ]
-        // result: 'encrypted data'
+        ],
+        result: 'encrypted data'
+      },
+      {
+        id: 'id 2',
+        date: new Date(),
+        status: 'finished',
+        deployedContract: 'Contract...',
+        transactions: [
+          {
+            to: 'aaaa',
+            payment: 0.3,
+            data: 'data 1'
+          },
+          {
+            to: 'bbb',
+            payment: 0.5,
+            data: 'data 2'
+          },
+          {
+            to: 'ccc',
+            payment: 0.7,
+            data: 'data 7'
+          }
+
+        ],
+        result: 'encrypted data again'
       }
     ]
   }
