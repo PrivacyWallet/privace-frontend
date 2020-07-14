@@ -1,12 +1,22 @@
 <template>
-  <q-page class="flex flex-center">
-    <q-table title="历史交易记录" :data="data" :columns="columns" row-key="id" :visible-columns="visibleColumns">
-            <template v-slot:top="props">
-        <div class="col-2 q-table__title">Treats</div>
+  <q-page class="flex flex-center row">
+    {{data}}
+    <q-table
+      title="历史交易记录"
+      :data="data"
+      :columns="columns"
+      row-key="id"
+      :visible-columns="visibleColumns"
+      class="col-sm-11 col-md-8 col-xl-6"
+    >
+      <template v-slot:top="props">
+        <div class="col-2 q-table__title">历史交易记录</div>
 
         <q-space />
         <q-btn
-          flat round dense
+          flat
+          round
+          dense
           :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
           @click="props.toggleFullscreen"
           class="q-ml-md"
@@ -34,17 +44,22 @@
         </q-tr>
         <q-tr v-show="props.expand" :props="props">
           <q-td colspan="100%">
-              <!-- {{props}} -->
+            <!-- {{props}} -->
             <q-list bordered separator>
               <q-item v-ripple>
                 <q-item-section>owner</q-item-section>
                 <q-item-section>payment</q-item-section>
                 <q-item-section side>data</q-item-section>
               </q-item>
-              <q-item v-for="(transaction,idx) in data[props.rowIndex].transactions" :key="'s'+idx" clickable v-ripple>
+              <q-item
+                v-for="(transaction,idx) in data[props.rowIndex].transactions"
+                :key="'s'+idx"
+                clickable
+                v-ripple
+              >
                 <!-- <q-item-section avatar>
                   <q-icon name="signal_wifi_off" />
-                </q-item-section> -->
+                </q-item-section>-->
                 <q-item-section>{{transaction.to}}</q-item-section>
                 <q-item-section>{{transaction.payment}}</q-item-section>
                 <q-item-section side>{{transaction.data}}</q-item-section>
@@ -73,26 +88,27 @@ export default {
   name: 'PageIndex',
   components: { CreateTransaction },
   methods: {
-    toggleFAB: function () {
+    toggleFAB: function() {
       this.on = !this.on
-    }
+    },
   },
   data: () => ({
-    visibleColumns: [
-      'id', 'date', 'status'
-    ],
+    visibleColumns: ['id', 'date', 'status'],
     columns: [
       { name: 'id', label: '合约地址', field: 'id', align: 'center' },
-      { name: 'date', label: '日期', field: 'date' },
-      { name: 'status', label: '状态', field: 'status' },
-      { name: 'transactions', label: 'details', field: 'transactions' }
+      { name: 'date', label: '日期', field: 'date', align: 'center' },
+      { name: 'status', label: '状态', field: 'status' , align: 'center'},
+      { name: 'transactions', label: 'details', field: 'transactions' },
     ],
     on: false,
-    data: []
+    data: [],
   }),
-  created () {
+  created() {
     const etherTest = new EthTest()
-    this.data = etherTest.getTransactionsAsDataBuyer()
-  }
+    let data = etherTest.getTransactionsAsDataBuyer()
+    console.log(data)
+    data = data.map( v=> ({...v, date: v.date.toLocaleString()}) )
+    this.data = data
+  },
 }
 </script>

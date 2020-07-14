@@ -1,64 +1,72 @@
 <template>
+  <div class="q-pa-md">
+    <q-stepper v-model="step" vertical color="primary" animated class="stepper">
+      <span class="text-h6 q-mx-md">创建新的交易</span>
+      <q-step :name="1" title="设置交易参数" icon="settisngs" :done="step > 1">
+        <q-select v-model="newTransaction.filter" :options="filterOptions" label="筛选类型"></q-select>
+        <q-select v-model="newTransaction.query" :options="filterOptions" label="查询类型"></q-select>
+        <q-select v-model="newTransaction.queryType" :options="filterOptions" label="查询结果类型"></q-select>
+        <q-select v-model="newTransaction.queryType" :options="filterOptions" label="查询结果类型"></q-select>
+        <q-input v-model.number="newTransaction.budget" type="number" label="预算"></q-input>
+        <q-stepper-navigation>
+          <q-btn @click="step = 2" color="primary" label="继续" />
+        </q-stepper-navigation>
+      </q-step>
 
-      <div class="q-pa-md">
-        <q-stepper v-model="step" vertical color="primary" animated>
-          <q-step :name="1" title="Select campaign settings" icon="settisngs" :done="step > 1">
-            筛选 + 类型， 价格
-            For each ad campaign that you create, you can control how much you're willing to
-            spend on clicks and conversions, which networks and geographical locations you want
-            your ads to show on, and more.
-            <q-stepper-navigation>
-              <q-btn @click="step = 2" color="primary" label="Continue" />
-            </q-stepper-navigation>
-          </q-step>
+      <q-step
+        :name="2"
+        title="自定义拍卖合约"
+        caption="Optional"
+        icon="create_new_folder"
+        :done="step > 2"
+      >
+        An ad group contains one or more ads which target a shared set of keywords.
+        <q-stepper-navigation>
+          <q-btn @click="step = 4" color="primary" label="Continue" />
+          <q-btn flat @click="step = 1" color="primary" label="Back" class="q-ml-sm" />
+        </q-stepper-navigation>
+      </q-step>
 
-          <q-step
-            :name="2"
-            title="Create an ad group"
-            caption="Optional"
-            icon="create_new_folder"
-            :done="step > 2"
-          >
-            An ad group contains one or more ads which target a shared set of keywords.
-            <q-stepper-navigation>
-              <q-btn @click="step = 4" color="primary" label="Continue" />
-              <q-btn flat @click="step = 1" color="primary" label="Back" class="q-ml-sm" />
-            </q-stepper-navigation>
-          </q-step>
+      <q-step
+        :name="3"
+        title="部署合约"
+        icon="assignment"
+        disable
+      >This step won't show up because it is disabled.</q-step>
 
-          <q-step
-            :name="3"
-            title="Ad template"
-            icon="assignment"
-            disable
-          >This step won't show up because it is disabled.</q-step>
-
-          <q-step :name="4" title="Create an ad" icon="add_comment">
-            Try out different ad text to see what brings in the most customers, and learn how to
-            enhance your ads using features like ad extensions. If you run into any problems with
-            your ads, find out how to tell if they're running and how to resolve approval issues.
-            <q-stepper-navigation>
-              <q-btn color="primary" label="Finish" @click="func" />
-              <q-btn flat @click="step = 2" color="primary" label="Back" class="q-ml-sm" />
-            </q-stepper-navigation>
-          </q-step>
-        </q-stepper>
-      </div>
-
+      <q-step :name="4" title="生成新的合约" icon="add_comment">
+      可以返回历史交易记录页面查看最新的合约。
+        <q-stepper-navigation>
+          <q-btn color="primary" label="Finish" @click="func" />
+          <q-btn flat @click="step = 2" color="primary" label="Back" class="q-ml-sm" />
+        </q-stepper-navigation>
+      </q-step>
+    </q-stepper>
+  </div>
 </template>
 
 <script>
 export default {
   props: ['func'],
-  methods: {
-
-  },
+  methods: {},
   data: () => ({
     step: 1,
-    on: true
-  })
+    on: true,
+    filterOptions: ['无', 'a', 'test'],
+    queryOptions: ['年龄', '身高', 'test'],
+    queryTypeOptions: ['平均数', '中位数'],
+    newTransaction: {
+      filter: '无',
+      query: '年龄',
+      queryType: '平均数',
+      budget: 1
+    },
+  }),
 }
 </script>
 
-<style>
+<style scoped>
+.q-stepper {
+  min-width: 500px;
+}
 </style>
