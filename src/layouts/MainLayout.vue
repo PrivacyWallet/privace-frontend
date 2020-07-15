@@ -28,6 +28,11 @@
         </div>
         <!-- <div>Quasar v{{ $q.version }}</div> -->
       </q-toolbar>
+      <q-toolbar>
+      <div class="q-pa-md">
+        账户地址: {{account}}
+      </div>
+      </q-toolbar>
     </q-header>
 
     <q-page-container>
@@ -41,6 +46,7 @@
 
 export default {
   name: 'MainLayout',
+  props: ["account"],
 
   components: {
 

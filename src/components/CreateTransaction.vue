@@ -6,7 +6,6 @@
         <q-select v-model="newTransaction.filter" :options="filterOptions" label="筛选类型"></q-select>
         <q-select v-model="newTransaction.query" :options="filterOptions" label="查询类型"></q-select>
         <q-select v-model="newTransaction.queryType" :options="filterOptions" label="查询结果类型"></q-select>
-        <q-select v-model="newTransaction.queryType" :options="filterOptions" label="查询结果类型"></q-select>
         <q-input v-model.number="newTransaction.budget" type="number" label="预算"></q-input>
         <q-stepper-navigation>
           <q-btn @click="step = 2" color="primary" label="继续" />
