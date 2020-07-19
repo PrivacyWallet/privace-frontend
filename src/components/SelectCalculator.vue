@@ -5,9 +5,7 @@
 </template>
 
 <script>
-import { EthTest } from 'src/scripts/eth'
-
-const Eth = new EthTest()
+import { getCalculators } from 'src/scripts/eth'
 
 export default {
   props: {
@@ -30,7 +28,7 @@ export default {
     },
   },
   mounted() {
-    this.options = Eth.getCalculators()
+    this.options = getCalculators()
   },
 }
 </script>

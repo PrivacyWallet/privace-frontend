@@ -5,7 +5,7 @@
       title="历史交易记录"
       :data="data"
       :columns="columns"
-      row-key="id"
+      row-key="bidStartID"
       :visible-columns="visibleColumns"
       class="col-sm-11 col-md-8 col-xl-6"
     >
@@ -49,7 +49,6 @@
               <q-item v-ripple>
                 <q-item-section>owner</q-item-section>
                 <q-item-section>payment</q-item-section>
-                <q-item-section side>data</q-item-section>
               </q-item>
               <q-item
                 v-for="(transaction,idx) in data[props.rowIndex].transactions"
@@ -62,7 +61,6 @@
                 </q-item-section>-->
                 <q-item-section>{{transaction.to}}</q-item-section>
                 <q-item-section>{{transaction.payment}}</q-item-section>
-                <q-item-section side>{{transaction.data}}</q-item-section>
               </q-item>
             </q-list>
             <div class="text-left">This is expand slot for row above: {{ props.row.name }}.</div>
@@ -82,7 +80,7 @@
 
 <script>
 import CreateTransaction from 'src/components/CreateTransaction'
-import { EthTest } from 'src/scripts/eth'
+import { getTransactionsAsDataBuyer } from 'src/scripts/eth'
 
 export default {
   name: 'PageIndex',
@@ -93,21 +91,33 @@ export default {
     },
   },
   data: () => ({
-    visibleColumns: ['id', 'date', 'status'],
+    visibleColumns: ['bidStartID', 'bidEndID', 'date', 'status', 'deployedContract', 'calculatorContract'],
     columns: [
-      { name: 'id', label: '合约地址', field: 'id', align: 'center' },
+      {
+        name: 'bidStartID',
+        label: '交易发起地址',
+        field: 'bidStartID',
+        align: 'center',
+      },
+      {
+        name: 'bidEndID',
+        label: '交易结束地址',
+        field: 'bidEndID',
+        align: 'center',
+      },
       { name: 'date', label: '日期', field: 'date', align: 'center' },
-      { name: 'status', label: '状态', field: 'status' , align: 'center'},
+      { name: 'status', label: '状态', field: 'status', align: 'center' },
+      { name: 'deployedContract', label: '部署合约', field: 'deployedContract', align: 'center' },
+      { name: 'calculatorContract', label: '外包计算者合约', field: 'calculatorContract', align: 'center' },
       { name: 'transactions', label: 'details', field: 'transactions' },
     ],
     on: false,
     data: [],
   }),
   created() {
-    const etherTest = new EthTest()
-    let data = etherTest.getTransactionsAsDataBuyer()
+    let data = getTransactionsAsDataBuyer()
     console.log(data)
-    data = data.map( v=> ({...v, date: v.date.toLocaleString()}) )
+    data = data.map(v => ({ ...v, date: v.date.toLocaleString() }))
     this.data = data
   },
 }

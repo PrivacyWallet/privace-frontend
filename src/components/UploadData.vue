@@ -39,9 +39,7 @@
 <script>
 import Sheet from 'src/components/Sheet'
 import SelectCalculator from 'src/components/SelectCalculator'
-import { EthTest } from 'src/scripts/eth'
-
-const eth = new EthTest()
+import { uploadNewData } from 'src/scripts/eth'
 
 export default {
   components: {
@@ -58,7 +56,7 @@ export default {
   methods: {
     uploadData() {
       console.log(this.data, this.epsilon, this.price, this.calculator)
-      eth.uploadNewData(this.data, this.epsilon, this.price, this.calculator)
+      uploadNewData(this.data, this.epsilon, this.price, this.calculator)
     },
   },
 }

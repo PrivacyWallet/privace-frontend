@@ -30,7 +30,7 @@
 
 <script>
 import UploadData from 'src/components/UploadData'
-import { EthTest } from 'src/scripts/eth'
+import { getTransactionsAsDataOwner, getData } from 'src/scripts/eth'
 
 export default {
   name: 'DataOwner',
@@ -65,14 +65,13 @@ export default {
     },
   },
   created() {
-    const etherTest = new EthTest()
-    let data = etherTest.getTransactionsAsDataOwner()
+    let data = getTransactionsAsDataOwner()
     console.log(data)
     data = data.map(v => ({ ...v, date: v.date.toLocaleString() }))
     console.log(data)
     this.transactionsHistory = data
 
-    data = etherTest.getData();
+    data = getData();
     for(let i = 0; i< data.length; i+=1){
       data[i].id = i;
     }
