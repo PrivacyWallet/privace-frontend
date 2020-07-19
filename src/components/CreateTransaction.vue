@@ -14,12 +14,11 @@
 
       <q-step
         :name="2"
-        title="自定义拍卖合约"
-        caption="Optional"
+        title="选择拍卖合约"
         icon="create_new_folder"
         :done="step > 2"
       >
-        An ad group contains one or more ads which target a shared set of keywords.
+      <SelectCalculator v-model="calculator" />
         <q-stepper-navigation>
           <q-btn @click="step = 4" color="primary" label="Continue" />
           <q-btn flat @click="step = 1" color="primary" label="Back" class="q-ml-sm" />
@@ -45,12 +44,13 @@
 </template>
 
 <script>
+import SelectCalculator from 'src/components/SelectCalculator'
 export default {
+components: {SelectCalculator},
   props: ['func'],
   methods: {},
   data: () => ({
     step: 1,
-    on: true,
     filterOptions: ['无', 'a', 'test'],
     queryOptions: ['年龄', '身高', 'test'],
     queryTypeOptions: ['平均数', '中位数'],
@@ -60,6 +60,7 @@ export default {
       queryType: '平均数',
       budget: 1
     },
+    calculator: ""
   }),
 }
 </script>

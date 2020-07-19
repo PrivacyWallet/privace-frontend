@@ -39,6 +39,16 @@ const routes = [
     ]
   },
   {
+    path: '/a',
+    component: () => import('layouts/Unlogin.vue'),
+    children: [
+      {
+        path: '',
+        component: () => import('pages/uploadCalculator')
+      }
+    ]
+  },
+  {
     path: '/n',
     component: () => import('layouts/Unlogin.vue'),
     children: [
