@@ -42,7 +42,7 @@ interface EthInterface {
    *  @param bidStartID 是开始交易时调用 `bid` 方法的 tx_id
    *  @param bidEndID 是交易结束时调用 `bidEnd` 方法的 tx_id
    *  @param status 一般有 success, failed, on going.
-   *  @param calculatorAddress 外包计算者合约的地址
+   *  @param calculatorContract 外包计算者合约的地址
    */
   getTransactionsAsDataBuyer(): Array<{
     bidStartID: String
@@ -50,7 +50,7 @@ interface EthInterface {
     date: Date
     status: String
     deployedContract: String
-    calculatorAddress: String
+    calculatorContract: String
     transactions: Array<{ to: String; payment: Number }>
   }>
 
@@ -60,14 +60,14 @@ interface EthInterface {
    * @param selectType 选择具体查询的对象
    * @param queryType 查询的类型
    * @param budget 支付的金额
-   * @param calculatorAddress 外包计算者合约的地址
+   * @param calculatorContract 外包计算者合约的地址
    */
   createNewTransaction(
     filter: String,
     selectType: String,
     queryType: Number,
     budget: Number,
-    calculatorAddress: String
+    calculatorContract: String
   ): void
 
   // Data Owner
@@ -90,19 +90,25 @@ interface EthInterface {
    * 获得自己曾经提交的所有记录。
    * @returns calculatorAddress 外包计算者的合约地址
    */
-  getData(): Array<{ data: Form; epsilon: Number; calculatorAddress: String }>
+  getData(): Array<{
+    price: Number
+    epsilon: Number
+    databuyer: String
+    databuyerContract: String
+    calculatorContract: String
+  }>
 
   /**
    * 上传一份数据。
    * @param data 未加密的数据（但已经是验证过的信息）。
    * @param epsilon 隐私保护因子
-   * @param calculatorAddress 外包计算者合约的地址，见 `getCalculators`
+   * @param calculatorContract 外包计算者合约的地址，见 `getCalculators`
    */
   uploadNewData(
     data: Form,
     epsilon: Number,
     price: Number,
-    calculatorAddress: String
+    calculatorContract: String
   ): void
 
   // Calculator
@@ -134,7 +140,7 @@ export class EthTest implements EthInterface {
     date: Date
     status: String
     deployedContract: String
-    calculatorAddress: String
+    calculatorContract: String
     result: String
     transactions: { to: String; payment: Number }[]
   }[] {
@@ -144,7 +150,7 @@ export class EthTest implements EthInterface {
         bidEndID: 'End tx id 1',
         date: new Date(),
         status: 'finished',
-        calculatorAddress: 'calculator address 1',
+        calculatorContract: 'calculator address 1',
         deployedContract: 'Contract...',
         transactions: [
           {
@@ -163,7 +169,7 @@ export class EthTest implements EthInterface {
         bidEndID: 'End tx id 2',
         date: new Date(),
         status: 'finished',
-        calculatorAddress: 'calculator address 1',
+        calculatorContract: 'calculator address 1',
         deployedContract: 'Contract...',
         transactions: [
           {
@@ -189,7 +195,7 @@ export class EthTest implements EthInterface {
     selectType: String,
     queryType: Number,
     budget: Number,
-    calculatorAddress: String
+    calculatorContract: String
   ): void {}
 
   getTransactionsAsDataOwner(): {
@@ -220,32 +226,34 @@ export class EthTest implements EthInterface {
     ]
   }
 
-  getData(): Array<{ data: Form; epsilon: Number; calculatorAddress: String }> {
+  getData(): Array<{
+    price: Number
+    epsilon: Number
+    databuyer: String
+    databuyerContract: String
+    calculatorContract: String
+  }> {
     return [
       {
-        data: {
-          age: 32,
-          education: '本科',
-          gender: '男',
-          hometown: '北京市',
-          income: 3000,
-          maritalStatus: '已婚',
-          occupation: '学生',
-          wentTo: '香港特别行政区',
-        },
+        price: 40,
         epsilon: 30,
-        calculatorAddress: "calculator address 1"
+        databuyer: 'databuyer address 1',
+        databuyerContract: 'databuyer Contract address 1',
+        calculatorContract: 'calculator Contract address 1',
       },
     ]
   }
 
-  uploadNewData(data: Form, epsilon: Number, price: Number, calculatorAddress: String): void {}
+  uploadNewData(
+    data: Form,
+    epsilon: Number,
+    price: Number,
+    calculatorContract: String
+  ): void {}
 
-  addCalculator(address: String):void{
+  addCalculator(address: String): void {}
 
-  }
-
-  getCalculators(): Array<String>{
-    return ["calculator 1", "calculator 2"]
+  getCalculators(): Array<String> {
+    return ['calculator 1', 'calculator 2']
   }
 }
