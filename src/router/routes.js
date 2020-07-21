@@ -1,75 +1,48 @@
-
 const routes = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
     meta: {
-      breadcrumb: [
-        { name: 'Privace' }
-      ]
+      breadcrumb: [{ name: 'Privace' }],
     },
     children: [
       {
         path: '',
         component: () => import('pages/Index.vue'),
         meta: {
-          breadcrumb: [
-            { name: 'Home' }
-          ]
-        }
+          breadcrumb: [{ name: '主页' }],
+        },
       },
       {
         path: 'data-buyer',
         component: () => import('pages/DataBuyer.vue'),
         meta: {
-          breadcrumb: [
-            { name: 'Data Buyer' }
-          ]
-        }
+          breadcrumb: [{ name: '数据购买者' }],
+        },
       },
       {
         path: 'data-owner',
         component: () => import('pages/DataOwner.vue'),
         meta: {
-          breadcrumb: [
-            { name: 'Data Owner' }
-          ]
-        }
-      }
-    ]
-  },
-  {
-    path: '/a',
-    component: () => import('layouts/Unlogin.vue'),
-    children: [
-      {
-        path: '',
-        component: () => import('pages/uploadCalculator')
-      }
-    ]
-  },
-  {
-    path: '/n',
-    component: () => import('layouts/Unlogin.vue'),
-    children: [
-      {
-        path: 'login',
-        component: () => import('pages/Login.vue')
+          breadcrumb: [{ name: '数据所有者' }],
+        },
       },
       {
-        path: 'register',
-        component: () => import('pages/Register.vue')
-      }
-    ]
-
-  }
+        path: 'calculator',
+        component: () => import('pages/UploadCalculator'),
+        meta: {
+          breadcrumb: [{ name: '外包计算者' }],
+        },
+      },
+    ],
+  },
 ]
 
 // Always leave this as last one
 if (process.env.MODE !== 'ssr') {
   routes.push({
     path: '*',
-    component: () => import('pages/Error404.vue')
+    component: () => import('pages/Error404.vue'),
   })
 }
 

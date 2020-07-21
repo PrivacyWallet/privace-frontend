@@ -9,8 +9,6 @@
         </q-toolbar-title>
        <div class="q-pa-sm">
           <q-btn-group flat>
-            <q-btn color="purple" :disable="currentRoute === '/n/login'" to="/n/login" label="登录" icon="timeline" />
-            <q-btn color="purple" :disable="currentRoute === '/n/register'" to="/n/register" label="注册" icon="visibility" />
           </q-btn-group>
         </div>
       </q-toolbar>

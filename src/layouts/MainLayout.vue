@@ -1,16 +1,12 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
+    <q-header
+      bordered
+      class="text-white"
+      v-bind:class="{ 'bg-purple' : this.$route.path == '/data-buyer' }"
+      height-hint="98"
+    >
       <q-toolbar>
-        <!-- <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="leftDrawerOpen = !leftDrawerOpen"
-        /> -->
-
         <q-toolbar-title>
           <div class="q-pa-md q-gutter-sm">
             <q-breadcrumbs separator-color="white" active-color="white">
@@ -18,21 +14,18 @@
             </q-breadcrumbs>
             <!-- {{breadcrumbList}} -->
           </div>
-          <!-- Quasar App -->
         </q-toolbar-title>
-        <div class="q-pa-sm">
-          <q-btn-group flat>
-            <q-btn color="purple" :disable="currentRoute === '/data-owner'" to="/data-owner" label="数据所有者" icon="timeline" />
-            <q-btn color="purple" :disable="currentRoute === '/data-buyer'" to="/data-buyer" label="数据购买者" icon="visibility" />
-          </q-btn-group>
-        </div>
-        <!-- <div>Quasar v{{ $q.version }}</div> -->
+
+        <q-space />
+
+        <div v-if="$q.screen.gt.sm" class="q-pa-md">账户地址：{{account}}</div>
       </q-toolbar>
-      <q-toolbar>
-      <div class="q-pa-md">
-        账户地址: {{account}}
-      </div>
-      </q-toolbar>
+      <q-toolbar v-if="!$q.screen.gt.sm" class="q-pa-md">账户地址：{{account}}</q-toolbar>
+
+      <q-tabs align="justify">
+        <q-route-tab to="/data-owner" label="数据所有者" />
+        <q-route-tab to="/data-buyer" label="数据购买者" />
+      </q-tabs>
     </q-header>
 
     <q-page-container>
@@ -43,28 +36,29 @@
 </template>
 
 <script>
-
 export default {
   name: 'MainLayout',
-  props: ["account"],
+  props: ['account'],
 
-  components: {
-
-  },
+  components: {},
 
   watch: {
-    $route () {
+    $route() {
       this.currentRoute = this.$route.path
-      this.breadcrumbList = this.$route.matched.map(v => v.meta.breadcrumb[0].name)
-    }
+      this.breadcrumbList = this.$route.matched.map(
+        v => v.meta.breadcrumb[0].name
+      )
+    },
   },
-  created () {
+  created() {
     this.currentRoute = this.$route.path
-    this.breadcrumbList = this.$route.matched.map(v => v.meta.breadcrumb[0].name)
+    this.breadcrumbList = this.$route.matched.map(
+      v => v.meta.breadcrumb[0].name
+    )
     console.log(this.breadcrumbList)
   },
 
-  data () {
+  data() {
     return {
       leftDrawerOpen: false,
       breadcrumbList: [],
@@ -73,46 +67,46 @@ export default {
           title: 'Docs',
           caption: 'quasar.dev',
           icon: 'school',
-          link: 'https://quasar.dev'
+          link: 'https://quasar.dev',
         },
         {
           title: 'Github',
           caption: 'github.com/quasarframework',
           icon: 'code',
-          link: 'https://github.com/quasarframework'
+          link: 'https://github.com/quasarframework',
         },
         {
           title: 'Discord Chat Channel',
           caption: 'chat.quasar.dev',
           icon: 'chat',
-          link: 'https://chat.quasar.dev'
+          link: 'https://chat.quasar.dev',
         },
         {
           title: 'Forum',
           caption: 'forum.quasar.dev',
           icon: 'record_voice_over',
-          link: 'https://forum.quasar.dev'
+          link: 'https://forum.quasar.dev',
         },
         {
           title: 'Twitter',
           caption: '@quasarframework',
           icon: 'rss_feed',
-          link: 'https://twitter.quasar.dev'
+          link: 'https://twitter.quasar.dev',
         },
         {
           title: 'Facebook',
           caption: '@QuasarFramework',
           icon: 'public',
-          link: 'https://facebook.quasar.dev'
+          link: 'https://facebook.quasar.dev',
         },
         {
           title: 'Quasar Awesome',
           caption: 'Community Quasar projects',
           icon: 'favorite',
-          link: 'https://awesome.quasar.dev'
-        }
-      ]
+          link: 'https://awesome.quasar.dev',
+        },
+      ],
     }
-  }
+  },
 }
 </script>

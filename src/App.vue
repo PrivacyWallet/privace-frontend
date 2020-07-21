@@ -9,6 +9,7 @@
 
 <script>
 import VueMetamask from 'vue-metamask'
+import NewWeb3 from 'web3'
 
 let account = null
 
@@ -36,6 +37,14 @@ export default {
       console.log('data: ', data)
       account = data.account
       this.account = data.metaMaskAddress
+
+      if (window.ethereum) {
+        window.web3 = new NewWeb3(window.ethereum)
+        window.ethereum.enable()
+      } else {
+        alert('cannot use newest web3')
+      }
+
     },
   },
 }

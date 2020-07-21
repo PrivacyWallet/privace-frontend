@@ -20,19 +20,12 @@
       >
       <SelectCalculator v-model="calculator" />
         <q-stepper-navigation>
-          <q-btn @click="step = 4" color="primary" label="Continue" />
+          <q-btn @click="step = 3" color="primary" label="Continue" />
           <q-btn flat @click="step = 1" color="primary" label="Back" class="q-ml-sm" />
         </q-stepper-navigation>
       </q-step>
 
-      <q-step
-        :name="3"
-        title="部署合约"
-        icon="assignment"
-        disable
-      >This step won't show up because it is disabled.</q-step>
-
-      <q-step :name="4" title="生成新的合约" icon="add_comment">
+      <q-step :name="3" title="生成新的合约" icon="add_comment">
       可以返回历史交易记录页面查看最新的合约。
         <q-stepper-navigation>
           <q-btn color="primary" label="Finish" @click="func" />

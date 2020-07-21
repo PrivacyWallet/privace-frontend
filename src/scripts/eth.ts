@@ -1,4 +1,6 @@
 import { returnString } from './test'
+import { bytecode } from './dataBuyerByteCode'
+import api from './api'
 
 /**
  * Register new account and return the private key
@@ -106,7 +108,16 @@ function createNewTransaction(
   queryType: Number,
   budget: Number,
   calculatorContract: String
-): void {}
+): void {
+  //api.createNewTransaction(
+    //filter,
+    //selectType,
+    //queryType,
+    //budget,
+    //calculatorContract,
+    //bytecode
+  //)
+}
 
 // Data Owner
 /**
@@ -176,7 +187,10 @@ function uploadNewData(
   epsilon: Number,
   price: Number,
   calculatorContract: String
-): void {}
+): void {
+  let string_data = JSON.stringify(data)
+  api.uploadNewData(string_data, epsilon, price, calculatorContract)
+}
 
 // Calculator
 
