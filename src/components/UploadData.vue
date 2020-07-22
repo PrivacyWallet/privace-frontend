@@ -14,22 +14,30 @@
         <q-input v-model="price" title="价格" hint="购买者将按照该金额支付" />
         <q-stepper-navigation>
           <q-btn @click="step = 3" color="primary" label="Continue" />
-          <q-btn flat @click="step = 1" color="primary" label="Back" class="q-ml-sm" />
+          <q-btn flat @click="step = 1" color="primary" label="返回" class="q-ml-sm" />
         </q-stepper-navigation>
       </q-step>
       <q-step :name="3" title="选择外包计算者合约地址" icon="add_comment" :done="step > 3">
         <SelectCalculator v-model="calculator" />
         <q-stepper-navigation>
           <q-btn @click="step = 4" color="primary" label="Continue" />
-          <q-btn flat @click="step = 2" color="primary" label="Back" class="q-ml-sm" />
+          <q-btn flat @click="step = 2" color="primary" label="返回" class="q-ml-sm" />
         </q-stepper-navigation>
       </q-step>
 
       <q-step :name="4" title="上传数据" icon="add_comment">
         可以返回历史交易记录页面查看最新的合约。
         <q-stepper-navigation>
-          <q-btn color="primary" label="Finish" @click="uploadData" />
-          <q-btn flat @click="step = 3" color="primary" label="Back" class="q-ml-sm" />
+          <q-btn
+            :color="finish? 'positive':'primary'"
+            :label="finish? '完成' : '提交'"
+            :icon="finish?'done':'cloud_upload'"
+            :disable="finish"
+            :loading="loading"
+            @click="uploadData"
+          />
+          <q-btn flat @click="step = 3" color="primary" label="返回" class="q-ml-sm" />
+          <q-btn flat @click="func" color="primary" label="关闭" class="q-ml-sm" />
         </q-stepper-navigation>
       </q-step>
     </q-stepper>
@@ -42,21 +50,37 @@ import SelectCalculator from 'src/components/SelectCalculator'
 import { uploadNewData } from 'src/scripts/eth'
 
 export default {
-  components: {
-    Sheet,
-    SelectCalculator,
-  },
+  components: { Sheet, SelectCalculator },
   data: () => ({
+    loading: false,
+    finish: false,
     step: 1,
-    data: { },
+    data: {},
     epsilon: 1,
     price: 42,
     calculator: '',
   }),
   methods: {
     uploadData() {
+      this.loading = true
       console.log(this.data, this.epsilon, this.price, this.calculator)
-      uploadNewData(this.data, this.epsilon, this.price, this.calculator)
+      const onsuccess = receipt => {
+        console.log(receipt)
+        this.loading = false
+        this.finish = true
+      }
+      const onfail = error => {
+        this.loading = false
+        console.log(error)
+      }
+      uploadNewData(
+        this.data,
+        this.epsilon,
+        this.price,
+        this.calculator,
+        onsuccess,
+        onfail
+      )
     },
   },
 }

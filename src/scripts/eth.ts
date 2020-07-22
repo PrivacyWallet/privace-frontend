@@ -107,16 +107,20 @@ function createNewTransaction(
   selectType: String,
   queryType: Number,
   budget: Number,
-  calculatorContract: String
+  calculatorContract: String,
+  onsuccess: (receipt:any) => void,
+  onfail: (error: any) => void,
 ): void {
-  //api.createNewTransaction(
-    //filter,
-    //selectType,
-    //queryType,
-    //budget,
-    //calculatorContract,
-    //bytecode
-  //)
+  api.createNewTransaction(
+    filter,
+    selectType,
+    queryType,
+    budget,
+    calculatorContract,
+    bytecode,
+    onsuccess,
+    onfail,
+  )
 }
 
 // Data Owner
@@ -186,10 +190,12 @@ function uploadNewData(
   data: Form,
   epsilon: Number,
   price: Number,
-  calculatorContract: String
+  calculatorContract: String,
+  onsuccess: (receipt:any) => void,
+  onfail: (error: any) => void,
 ): void {
   let string_data = JSON.stringify(data)
-  api.uploadNewData(string_data, epsilon, price, calculatorContract)
+  api.uploadNewData(string_data, epsilon, price, calculatorContract, onsuccess, onfail)
 }
 
 // Calculator

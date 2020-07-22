@@ -3,7 +3,7 @@
     <q-header
       bordered
       class="text-white"
-      v-bind:class="{ 'bg-purple' : this.$route.path == '/data-buyer' }"
+      v-bind:class="{ 'bg-accent' : this.$route.path == '/data-buyer' }"
       height-hint="98"
     >
       <q-toolbar>
