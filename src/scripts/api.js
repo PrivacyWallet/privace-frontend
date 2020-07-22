@@ -12,6 +12,7 @@ import JSEncrypt from 'jsencrypt'
 // const NodeRSA = require('node-rsa')
 // let fs = require('fs')
 // let Tx = require('ethereumjs-tx')
+window.JSEncrypt = JSEncrypt
 
 async function createNewTransaction(
   filter,
