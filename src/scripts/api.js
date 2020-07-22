@@ -26,13 +26,14 @@ async function createNewTransaction(
 ) {
   const web3 = window.web3
   const myContract =new web3.eth.Contract(abi.Inter)
+  const account = await web3.eth.getCoinbase()
   await myContract
     .deploy({
       data: bindata,
     })
     .send(
       {
-        from: web3.eth.coinbase,
+        from: account,
         gas: 1500000,
         gasPrice: '30000000000000',
       },
@@ -53,7 +54,7 @@ async function createNewTransaction(
     })
   const contract = new web3.eth.Contract(abi.Calc, calculatorAddress)
   await contract.methods
-    .bid(myContract.address, 'median')
+    .bid(myContract.address)
     .send({
       gas: 3000000,
       gasPrice: web3.utils.toWei('1', 'gwei'),
