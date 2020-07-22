@@ -25,7 +25,7 @@ async function createNewTransaction(
   onfail,
 ) {
   const web3 = window.web3
-  const myContract = web3.eth.contract(abi.Inter)
+  const myContract =new web3.eth.Contract(abi.Inter)
   await myContract
     .deploy({
       data: bindata,
