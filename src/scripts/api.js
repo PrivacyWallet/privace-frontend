@@ -27,7 +27,8 @@ async function createNewTransaction(
   const web3 = window.web3
   const myContract =new web3.eth.Contract(abi.Inter)
   const account = await web3.eth.getCoinbase()
-  await myContract
+  var tran;
+  tran =await myContract
     .deploy({
       data: bindata,
     })
@@ -35,30 +36,20 @@ async function createNewTransaction(
       {
         from: account,
         gas: 1500000,
-        gasPrice: '30000000000000',
+        gasPrice: '30000000000',
       },
       function(error, transactionHash) {
         console.log(error)
       }
-    )
-    .on('error', function(error) {
-      console.log(error)
-    })
-    .on('transactionHash', function(transactionHash) {})
-    .on('receipt', function(receipt) {
-      console.log(receipt.contractAddress) // 收据中包含了新的合约地址
-    })
-    .on('confirmation', function(confirmationNumber, receipt) {})
-    .then(function(newContractInstance) {
-      console.log(newContractInstance.options.address) // 新地址的合约实例
-    })
+    );
+  console.log(tran);
   const contract = new web3.eth.Contract(abi.Calc, calculatorAddress)
   await contract.methods
-    .bid(myContract.address)
+    .bid(tran._address)
     .send({
       gas: 3000000,
       gasPrice: web3.utils.toWei('1', 'gwei'),
-      from: window.web3.eth.coinbase,
+      from: account,
       // 'nonce' : web3.eth.getTransactionCount(this.account.address),
       value: budget,
     })
