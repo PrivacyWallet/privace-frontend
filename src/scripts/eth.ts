@@ -163,18 +163,16 @@ function getTransactionsAsDataOwner(): Array<{
  * @returns calculatorAddress 外包计算者的合约地址
  */
 function getData(): Array<{
+  id: String,
   price: Number
   epsilon: Number
-  databuyer: String
-  databuyerContract: String
   calculatorContract: String
 }> {
   return [
     {
+      id: "0xabcdef",
       price: 40,
       epsilon: 30,
-      databuyer: 'databuyer address 1',
-      databuyerContract: 'databuyer Contract address 1',
       calculatorContract: 'calculator Contract address 1',
     },
   ]
