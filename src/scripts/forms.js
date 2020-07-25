@@ -1,6 +1,6 @@
 import pca from './pca'
 
-const forms = {
+const form = {
   gender: ['男', '女', '其他'],
   occupation: [
     '学生',
@@ -31,4 +31,8 @@ const forms = {
   wentTo: pca,
 }
 
-export default forms
+export const formType = [
+
+]
+
+export default form

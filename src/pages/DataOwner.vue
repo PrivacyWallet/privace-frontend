@@ -83,13 +83,13 @@ export default {
     ],
     transactionsHistory: [],
     dataHistoryVisibleColumns: [
+      'id',
       'price',
       'epsilon',
-      'databuyer',
-      'databuyerContract',
       'calculatorContract',
     ],
     dataHistoryColumns: [
+      { name: 'id', label: '交易ID', field: 'id', align: 'center' },
       { name: 'price', label: '价格', field: 'price', align: 'center' },
       {
         name: 'epsilon',
@@ -98,20 +98,8 @@ export default {
         align: 'center',
       },
       {
-        name: 'databuyer',
-        label: '购买者',
-        field: 'databuyer',
-        align: 'center',
-      },
-      {
-        name: 'databuyerContract',
-        label: '购买者合约地址',
-        field: 'databuyerContract',
-        align: 'center',
-      },
-      {
         name: 'calculatorContract',
-        label: '购买者合约地址',
+        label: '外包计算者合约地址',
         field: 'calculatorContract',
         align: 'center',
       },

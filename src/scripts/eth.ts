@@ -96,25 +96,25 @@ function getTransactionsAsDataBuyer(): Array<{
 
 /**
  * 创建一个新的交易
- * @param filter 筛选的条件
- * @param selectType 选择具体查询的对象
- * @param queryType 查询的类型
+ * @param queryType 查询的类型，其值为 ['age', 'gender', 'occupation', 'income', 'hometown', 'education', 'maritalStatus', 'wentTo'] 之一
+ * @param query 选择具体查询的值，仅在 resultType == '统计个数' 时有效；当 resultType == '中位数' 时，此值为 ''。
+ * @param resultType 计算结果的类型，其值为 ['统计个数', '中位数'] 之一
  * @param budget 支付的金额
  * @param calculatorContract 外包计算者合约的地址
  */
 function createNewTransaction(
-  filter: String,
-  selectType: String,
-  queryType: Number,
+  queryType: String,
+  query: String ,
+  resultType: String,
   budget: Number,
   calculatorContract: String,
   onsuccess: (receipt:any) => void,
   onfail: (error: any) => void,
 ): void {
   api.createNewTransaction(
-    filter,
-    selectType,
     queryType,
+    query,
+    resultType,
     budget,
     calculatorContract,
     bytecode,

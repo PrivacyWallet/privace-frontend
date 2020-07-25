@@ -2,10 +2,27 @@
   <div class="q-pa-md">
     <q-stepper v-model="step" vertical color="primary" animated class="stepper">
       <span class="text-h6 q-mx-md">创建新的交易</span>
+      {{newTransaction}}
       <q-step :name="1" title="设置交易参数" icon="settisngs" :done="step > 1">
-        <q-select v-model="newTransaction.filter" :options="filterOptions" label="筛选类型"></q-select>
-        <q-select v-model="newTransaction.query" :options="filterOptions" label="查询类型"></q-select>
-        <q-select v-model="newTransaction.queryType" :options="filterOptions" label="查询结果类型"></q-select>
+        <!--<q-select v-model="newTransaction.filter" :options="filterOptions" label="筛选类型"></q-select>-->
+        <q-select
+          v-model="newTransaction.queryType"
+          :options="queryTypeOptions"
+          :rules="[val => !!val || 'Field is required']"
+          label="查询类型"
+        ></q-select>
+        <q-select
+          v-if="newTransaction.queryType.type === 'String'"
+          v-model="newTransaction.query"
+          :options="queryOptions[newTransaction.queryType.value]"
+          label="查询值"
+        ></q-select>
+        <q-input
+          readonly
+          v-model="newTransaction.resultType"
+          :options="resultTypeOptions"
+          label="计算结果类型"
+        ></q-input>
         <q-input v-model.number="newTransaction.budget" type="number" label="预算"></q-input>
         <q-stepper-navigation>
           <q-btn @click="step = 2" color="primary" label="继续" />
@@ -42,6 +59,7 @@
 <script>
 import SelectCalculator from 'src/components/SelectCalculator'
 import { createNewTransaction } from 'src/scripts/eth.ts'
+import form from 'src/scripts/forms.js'
 export default {
   components: { SelectCalculator },
   props: ['func'],
@@ -58,9 +76,9 @@ export default {
         console.log(error)
       }
       createNewTransaction(
-        this.newTransaction.filter,
+        this.newTransaction.queryType.value,
         this.newTransaction.query,
-        this.newTransaction.queryType,
+        this.newTransaction.resultType,
         this.newTransaction.budget,
         this.calculator,
         onsuccess,
@@ -72,17 +90,36 @@ export default {
     loading: false,
     finish: false,
     step: 1,
-    filterOptions: ['无', 'a', 'test'],
-    queryOptions: ['年龄', '身高', 'test'],
-    queryTypeOptions: ['平均数', '中位数'],
+    queryTypeOptions: [
+      { value: 'age', label: '年龄', type: 'Number' },
+      { value: 'gender', label: '性别', type: 'String' },
+      { value: 'occupation', label: '职业', type: 'String' },
+      { value: 'income', label: '收入', type: 'Number' },
+      { value: 'hometown', label: '居住地', type: 'String' },
+      { value: 'education', label: '学历', type: 'String' },
+      { value: 'maritalStatus', label: '婚姻状况', type: 'String' },
+      { value: 'wentTo', label: '去往', type: 'String' },
+    ],
+    queryOptions: form,
+    resultTypeOptions: ['平均数', '中位数'],
     newTransaction: {
-      filter: '无',
-      query: '年龄',
-      queryType: '平均数',
+      resultType: '',
+      query: '',
+      queryType: '',
       budget: 1,
     },
     calculator: '',
   }),
+  watch: {
+    'newTransaction.queryType': function(newVal) {
+      this.newTransaction.query = ''
+      if (newVal.type === 'String') {
+        this.newTransaction.resultType = '统计个数'
+      } else {
+        this.newTransaction.resultType = '中位数'
+      }
+    },
+  },
 }
 </script>
 

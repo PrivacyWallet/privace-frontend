@@ -15,9 +15,9 @@ import JSEncrypt from 'jsencrypt'
 window.JSEncrypt = JSEncrypt
 
 async function createNewTransaction(
-  filter,
-  selectType,
   queryType,
+  query,
+  resultType,
   budget,
   calculatorAddress,
   bindata,
