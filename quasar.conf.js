@@ -114,8 +114,8 @@ module.exports = function (/* ctx */) {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: 'privace',
-        short_name: 'privace',
+        name: 'PrivacyWallet',
+        short_name: 'PrivacyWallet',
         description: 'A Quasar Framework app',
         display: 'standalone',
         orientation: 'portrait',
@@ -182,7 +182,7 @@ module.exports = function (/* ctx */) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'privace'
+        appId: 'PrivacyWallet'
       },
 
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration

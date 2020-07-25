@@ -46,7 +46,7 @@
       <q-btn fab icon="add" color="primary" @click="on = !on" />
     </q-page-sticky>
     <q-dialog v-model="on">
-      <UploadData />
+      <UploadData :func="toggleFAB" />
     </q-dialog>
   </q-page>
 </template>
@@ -82,12 +82,7 @@ export default {
       },
     ],
     transactionsHistory: [],
-    dataHistoryVisibleColumns: [
-      'id',
-      'price',
-      'epsilon',
-      'calculatorContract',
-    ],
+    dataHistoryVisibleColumns: ['id', 'price', 'epsilon', 'calculatorContract'],
     dataHistoryColumns: [
       { name: 'id', label: '交易ID', field: 'id', align: 'center' },
       { name: 'price', label: '价格', field: 'price', align: 'center' },

@@ -10,8 +10,13 @@
       </q-step>
 
       <q-step :name="2" title="设置交易参数" caption icon="create_new_folder" :done="step > 2">
-        <q-input v-model="epsilon" title="隐私保护因子" hint="该值越小，隐私保护程度越高" />
-        <q-input v-model="price" title="价格" hint="购买者将按照该金额支付" />
+        <q-input
+          v-model="epsilon"
+          :rules="[val => !!val || '此项为必填项']"
+          title="隐私保护因子"
+          hint="该值越小，隐私保护程度越高"
+        />
+        <q-input v-model="price" :rules="[val => !!val || '此项为必填项']" title="价格" hint="购买者将按照该金额支付" />
         <q-stepper-navigation>
           <q-btn @click="step = 3" color="primary" label="Continue" />
           <q-btn flat @click="step = 1" color="primary" label="返回" class="q-ml-sm" />
@@ -51,6 +56,7 @@ import { uploadNewData } from 'src/scripts/eth'
 
 export default {
   components: { Sheet, SelectCalculator },
+  props: ['func'],
   data: () => ({
     loading: false,
     finish: false,

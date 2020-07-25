@@ -1,4 +1,4 @@
-# privace (privace)
+# PrivacyWallet (PrivacyWallet)
 
 A Quasar Framework app
 

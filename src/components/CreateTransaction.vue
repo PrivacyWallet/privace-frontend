@@ -8,12 +8,13 @@
         <q-select
           v-model="newTransaction.queryType"
           :options="queryTypeOptions"
-          :rules="[val => !!val || 'Field is required']"
+          :rules="[val => !!val || '此项为必填项']"
           label="查询类型"
         ></q-select>
         <q-select
           v-if="newTransaction.queryType.type === 'String'"
           v-model="newTransaction.query"
+          :rules="[val => !!val || '此项为必填项']"
           :options="queryOptions[newTransaction.queryType.value]"
           label="查询值"
         ></q-select>

@@ -2,15 +2,15 @@
   <q-page class="flex flex-center row">
     <div class="col-12" style="height: 20vh;"></div>
     <div class="col-8" style="height: 80vh;">
-      <div class="q-mx-md text-h2 text-bold">Privace - Privacy has a price.</div>
+      <div class="q-mx-md text-h2 text-bold">PrivacyWallet - Privacy has a price.</div>
       <div class="q-ma-md text-h6">
-        Privace 是一个区块链上基于差分隐私与凸优化的拍卖系统。
+        PrivacyWallet 是一个区块链上基于差分隐私与凸优化的拍卖系统。
         <br />本系统能够在保证公平交易和个人隐私保护的情况下，实现链上数据交易。
       </div>
     </div>
 
     <div class="col-12 row" style="height: 70vh;">
-      <div class="col-12 flex flex-center text-h4 q-my-lg">Privace 是如何运作的</div>
+      <div class="col-12 flex flex-center text-h4 q-my-lg">PrivacyWallet 是如何运作的</div>
       <div class="col-4 row flex-center" v-for="(i,idx) in intro.howItWorks" :key="'hiw' + idx">
         <q-card class="col-8 my-card">
           <q-card-section>
