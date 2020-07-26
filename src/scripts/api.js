@@ -43,7 +43,26 @@ async function createNewTransaction(
       }
     );
   console.log(tran);
+  console.log(tran._address)
   const contract = new web3.eth.Contract(abi.Calc, calculatorAddress)
+  var json
+  json=JSON.stringify({
+    queryType:queryType,
+    query:query,
+    resultType:resultType,
+  });
+  const buyercontract = new web3.eth.Contract(abi.Inter, tran._address)
+  console.log(json)
+      await buyercontract.methods
+    .set_requirements(json)
+    .send({
+      gas: 3000000,
+      gasPrice: web3.utils.toWei('1', 'gwei'),
+      from: account,
+      // 'nonce' : web3.eth.getTransactionCount(this.account.address),
+    })
+    .on('receipt', onsuccess)
+    .on('error', onfail)
   await contract.methods
     .bid(tran._address)
     .send({
@@ -69,20 +88,23 @@ async function uploadNewData(data, epsilon, price, calculatorAddress, onsuccess,
     '-----END RSA PUBLIC KEY-----'
   const web3 = window.web3
   const contract = new web3.eth.Contract(abi.Calc, calculatorAddress)
+  console.log(data)
   const account = await web3.eth.getCoinbase()
   const encrypt = new JSEncrypt()
   encrypt.setPublicKey(rsadata)
   const cipherText = encrypt.encrypt(data)
   const params = ' '
-  contract.methods
+  var tran
+  tran=await contract.methods
     .set_data(price, cipherText, params, epsilon, account)
     .send({
       gas: 1000000,
       gasPrice: web3.utils.toWei('1', 'gwei'),
       from: account,
     })
-    .on('receipt', onsuccess)
-    .on('error', onfail)
+
+    console.log(tran.transactionHash)
+    return tran.transactionHash
 }
 
 export default { createNewTransaction, uploadNewData }
