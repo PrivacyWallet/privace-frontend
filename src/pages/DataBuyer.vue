@@ -6,7 +6,7 @@
       :columns="columns"
       row-key="bidStartID"
       :visible-columns="visibleColumns"
-      class="col-sm-11 col-md-8 col-xl-6"
+      class="col-sm-12 col-md-11 col-xl-10"
     >
       <template v-slot:top="props">
         <div class="col-2 q-table__title">交易历史</div>
@@ -39,30 +39,28 @@
               :icon="props.expand ? 'remove' : 'add'"
             />
           </q-td>
-          <q-td v-for="col in props.cols" :key="col.name" :props="props">{{ col.value }}</q-td>
+          <q-td v-for="col in props.cols" :key="col.name" :props="props">
+            <span v-if="col.value && col.value.length < 14">
+              {{ col.value }}
+            </span>
+            <span v-else-if="col.value && !col.value.startsWith('0x')">
+              {{ col.value }}
+            </span>
+            <span v-else>
+              {{col.value.substring(0,10)}}
+              <q-btn unelevated round v-clipboard="col.value" icon="content_copy"></q-btn>
+            </span>
+          </q-td>
         </q-tr>
-        <q-tr v-show="props.expand" :props="props">
+        <q-tr v-show="props.expand" :props="props" class="my-div">
           <q-td colspan="100%">
-            <!-- {{props}} -->
-            <q-list bordered separator>
-              <q-item-label header>交易详情</q-item-label>
-              <q-item v-ripple>
-                <q-item-section>owner</q-item-section>
-                <q-item-section>payment</q-item-section>
-              </q-item>
-              <q-item
-                v-for="(transaction,idx) in data[props.rowIndex].transactions"
-                :key="'s'+idx"
-                clickable
-                v-ripple
-              >
-                <!-- <q-item-section avatar>
-                  <q-icon name="signal_wifi_off" />
-                </q-item-section>-->
-                <q-item-section>{{transaction.to}}</q-item-section>
-                <q-item-section>{{transaction.payment}}</q-item-section>
-              </q-item>
-            </q-list>
+            <q-table
+              title="交易详情"
+              :data="data[props.rowIndex].transactions"
+              :columns="detailColumns"
+              row-key="to"
+              style="width:auto;"
+            />
           </q-td>
         </q-tr>
       </template>
@@ -84,12 +82,17 @@ import { getTransactionsAsDataBuyer } from 'src/scripts/eth'
 export default {
   name: 'PageIndex',
   components: { CreateTransaction },
+  props: ['account'],
   methods: {
     toggleFAB: function() {
       this.on = !this.on
     },
   },
   data: () => ({
+    detailColumns: [
+      { name: 'to', label: '数据所有者', field: 'to', align: 'center' },
+      { name: 'payment', label: '支付金额', field: 'payment', align: 'center' },
+    ],
     visibleColumns: [
       'bidStartID',
       'bidEndID',
@@ -97,7 +100,7 @@ export default {
       'status',
       'deployedContract',
       'calculatorContract',
-      'result'
+      'result',
     ],
     columns: [
       {
@@ -123,7 +126,7 @@ export default {
       {
         name: 'calculatorContract',
         label: '外包计算者合约',
-        field: 'calculatorContract',
+        field: 'calculatorAddress',
         align: 'center',
       },
       {
@@ -137,11 +140,21 @@ export default {
     on: false,
     data: [],
   }),
-  created() {
-    let data = getTransactionsAsDataBuyer()
-    console.log(data)
-    data = data.map(v => ({ ...v, date: v.date.toLocaleString() }))
+  async created() {
+    const data = await getTransactionsAsDataBuyer(this.account)
+    // data = data.map(v => ({ ...v, date: v.date.toLocaleString() }))
     this.data = data
   },
 }
 </script>
+<style>
+.max-width {
+  /*width: 100%;*/
+  /*margin: auto;*/
+}
+.my-div {
+  /*display: flex;*/
+  /*flex: auto;*/
+  /*justify-content: center;*/
+}
+</style>

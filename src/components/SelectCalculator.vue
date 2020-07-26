@@ -1,8 +1,6 @@
 <template>
   <div>
-    <!--
     <q-select v-model="calculator" :options="options" />
-    -->
     <q-input v-model="calculator" />
   </div>
 </template>
@@ -30,8 +28,19 @@ export default {
       },
     },
   },
-  mounted() {
-    this.options = getCalculators()
+  async mounted() {
+    const calculators = await getCalculators()
+    this.options =  calculators
+    console.group('calculators')
+    console.log(calculators)
+    console.groupEnd('calculators')
+  },
+  async created() {
+    const calculators = await getCalculators()
+    this.options =  calculators
+    console.group('calculators')
+    console.log(calculators)
+    console.groupEnd('calculators')
   },
 }
 </script>
