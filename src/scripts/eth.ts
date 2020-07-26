@@ -1,6 +1,7 @@
 import { returnString } from './test'
 import { bytecode } from './dataBuyerByteCode'
 import api from './api'
+import services from './services'
 
 /**
  * Register new account and return the private key
@@ -38,7 +39,9 @@ function getAccount(): { account: String; balance: Number } {
  *  @param status 一般有 success, failed, on going.
  *  @param calculatorContract 外包计算者合约的地址
  */
-function getTransactionsAsDataBuyer(): Array<{
+function getTransactionsAsDataBuyer(
+  address: String
+): Array<{
   bidStartID: String
   bidEndID: String
   date: Date
@@ -48,50 +51,7 @@ function getTransactionsAsDataBuyer(): Array<{
   result: String
   transactions: Array<{ to: String; payment: Number }>
 }> {
-  return [
-    {
-      bidStartID: 'start tx id 1',
-      bidEndID: 'End tx id 1',
-      date: new Date(),
-      status: 'finished',
-      calculatorContract: 'calculator address 1',
-      deployedContract: 'Contract...',
-      transactions: [
-        {
-          to: 'aaaa',
-          payment: 0.3,
-        },
-        {
-          to: 'bbb',
-          payment: 0.5,
-        },
-      ],
-      result: 'encrypted data',
-    },
-    {
-      bidStartID: 'start tx id 2',
-      bidEndID: 'End tx id 2',
-      date: new Date(),
-      status: 'finished',
-      calculatorContract: 'calculator address 1',
-      deployedContract: 'Contract...',
-      transactions: [
-        {
-          to: 'aaaa',
-          payment: 0.3,
-        },
-        {
-          to: 'bbb',
-          payment: 0.5,
-        },
-        {
-          to: 'ccc',
-          payment: 0.7,
-        },
-      ],
-      result: 'encrypted data again',
-    },
-  ]
+  return services.getTransactionsAsDataBuyer(address)
 }
 
 /**
@@ -104,12 +64,12 @@ function getTransactionsAsDataBuyer(): Array<{
  */
 function createNewTransaction(
   queryType: String,
-  query: String ,
+  query: String,
   resultType: String,
   budget: Number,
   calculatorContract: String,
-  onsuccess: (receipt:any) => void,
-  onfail: (error: any) => void,
+  onsuccess: (receipt: any) => void,
+  onfail: (error: any) => void
 ): void {
   api.createNewTransaction(
     queryType,
@@ -119,7 +79,7 @@ function createNewTransaction(
     calculatorContract,
     bytecode,
     onsuccess,
-    onfail,
+    onfail
   )
 }
 
@@ -138,24 +98,7 @@ function getTransactionsAsDataOwner(): Array<{
   from: String
   dataBuyerContractAddress: String
 }> {
-  return [
-    {
-      id: 'id 111',
-      date: new Date('2020-01-02'),
-      status: 'finished',
-      payment: 0.34,
-      dataBuyerContractAddress: 'data buyer contract address',
-      from: 'id xxxxxx01',
-    },
-    {
-      id: 'id 114',
-      date: new Date('2020-03-04'),
-      status: 'finished',
-      payment: 0.89,
-      dataBuyerContractAddress: 'data buyer contract address',
-      from: 'id xxxxxx01',
-    },
-  ]
+  return services.getTransactionsAsDataOwner()
 }
 
 /**
@@ -163,14 +106,14 @@ function getTransactionsAsDataOwner(): Array<{
  * @returns calculatorAddress 外包计算者的合约地址
  */
 function getData(): Array<{
-  id: String,
+  id: String
   price: Number
   epsilon: Number
   calculatorContract: String
 }> {
   return [
     {
-      id: "0xabcdef",
+      id: '0xabcdef',
       price: 40,
       epsilon: 30,
       calculatorContract: 'calculator Contract address 1',
@@ -189,11 +132,18 @@ function uploadNewData(
   epsilon: Number,
   price: Number,
   calculatorContract: String,
-  onsuccess: (receipt:any) => void,
-  onfail: (error: any) => void,
+  onsuccess: (receipt: any) => void,
+  onfail: (error: any) => void
 ): void {
   let string_data = JSON.stringify(data)
-  api.uploadNewData(string_data, epsilon, price, calculatorContract, onsuccess, onfail)
+  api.uploadNewData(
+    string_data,
+    epsilon,
+    price,
+    calculatorContract,
+    onsuccess,
+    onfail
+  )
 }
 
 // Calculator
@@ -205,8 +155,8 @@ function addCalculator(address: String): void {}
 /**
  * 获得所有的外包计算者
  */
-function getCalculators(): Array<String> {
-  return ['calculator 1', 'calculator 2']
+async function getCalculators(): Array<String> {
+  return await services.getCalculators()
 }
 
 export {

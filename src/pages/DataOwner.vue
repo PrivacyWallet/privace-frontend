@@ -107,10 +107,9 @@ export default {
       this.on = !this.on
     },
   },
-  created() {
-    let data = getTransactionsAsDataOwner()
+  async created() {
+    let data = await getTransactionsAsDataOwner()
     console.log(data)
-    data = data.map(v => ({ ...v, date: v.date.toLocaleString() }))
     console.log(data)
     this.transactionsHistory = data
 

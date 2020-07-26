@@ -30,7 +30,7 @@
 
     <q-page-container>
       <!-- <li v-for="(breadcrumb, idx) in breadcrumbList" :key="idx">{{breadcrumb.name}}</li> -->
-      <router-view />
+      <router-view :account="account"/>
     </q-page-container>
   </q-layout>
 </template>

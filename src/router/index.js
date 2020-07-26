@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Clipboard from 'v-clipboard'
 
 import routes from './routes'
 
+Vue.use(Clipboard)
 Vue.use(VueRouter)
 
 /*
