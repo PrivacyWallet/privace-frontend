@@ -39,19 +39,21 @@ function getAccount(): { account: String; balance: Number } {
  *  @param status 一般有 success, failed, on going.
  *  @param calculatorContract 外包计算者合约的地址
  */
-function getTransactionsAsDataBuyer(
+async function getTransactionsAsDataBuyer(
   address: String
-): Array<{
-  bidStartID: String
-  bidEndID: String
-  date: Date
-  status: String
-  deployedContract: String
-  calculatorContract: String
-  result: String
-  transactions: Array<{ to: String; payment: Number }>
-}> {
-  return services.getTransactionsAsDataBuyer(address)
+): Promise<
+  Array<{
+    bidStartID: String
+    bidEndID: String
+    date: Date
+    status: String
+    deployedContract: String
+    calculatorContract: String
+    result: String
+    transactions: Array<{ to: String; payment: Number }>
+  }>
+> {
+  return await services.getTransactionsAsDataBuyer(address)
 }
 
 /**
@@ -90,14 +92,16 @@ function createNewTransaction(
  * @param id trasaction id，这个应该是 bidEnd 的 ID。
  * @param dataBuyerContractAddress 数据购买者的合约地址
  */
-function getTransactionsAsDataOwner(): Array<{
-  id: String
-  date: Date
-  status: String
-  payment: Number
-  from: String
-  dataBuyerContractAddress: String
-}> {
+async function getTransactionsAsDataOwner(): Promise<
+  Array<{
+    id: String
+    date: Date
+    status: String
+    payment: Number
+    from: String
+    dataBuyerContractAddress: String
+  }>
+> {
   return services.getTransactionsAsDataOwner()
 }
 
@@ -155,7 +159,7 @@ function addCalculator(address: String): void {}
 /**
  * 获得所有的外包计算者
  */
-async function getCalculators(): Array<String> {
+async function getCalculators(): Promise<Array<String>> {
   return await services.getCalculators()
 }
 
