@@ -59,14 +59,12 @@ async function createNewTransaction(
 
 async function uploadNewData(data, epsilon, price, calculatorAddress, onsuccess, onfail) {
   const rsadata =
-    '-----BEGIN RSA PUBLIC KEY-----\n' +
-    'MIIBCgKCAQEAqymJH1pMkr4F9NR8nze09w+iMMejql4bk7GpVa0xjilCDsvVHvxD\n' +
-    'FhVHVRxpuZyM5p684sUGleV0qZXBXFuBzSLrY7n6GqlgP5qQorhCkQP7q05sqGtU\n' +
-    '95dYbn3LjEzYs14XtTCXZvO6zHzABoLceKzeYGHjahtKLIitLR1NbNYbrgKCMlQE\n' +
-    'JEvxQrYBYs7cbGY/PIRCft+F28VwUAilHLRNLpME+CAPI35VV6K+oVeEbBFiEgbE\n' +
-    'Wss++52Tjy6knCeb7a+aaEPsEu5+0Q6zTVauCTRBCEDngj13DbeBQsEitcOW8g11\n' +
-    'rpGLCqiFJsFrJLuKcxHyNefiALufEACeVwIDAQAB\n' +
-    '-----END RSA PUBLIC KEY-----'
+    '-----BEGIN PUBLIC KEY-----\n' +
+    'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCpNPFNLwGq2Q+Bf/JWEu7ajvrr\n' +
+    'iH4wEzbDmcR/6Kw7BCFAPkvxviBis/QBB0uCwv8By99fFMKllGQZZk4XudpzWumt\n' +
+    '7EjbZci4AlCbOx95wGHpc46FGqPGI2Iy1fViaiWq36PjNxRlY8tjQURZDCRluadv\n' +
+    'XlmhMMlxHs6+XllzQQIDAQAB\n' +
+    '-----END PUBLIC KEY-----'
   const web3 = window.web3
   const contract = new web3.eth.Contract(abi.Calc, calculatorAddress)
   const account = await web3.eth.getCoinbase()
@@ -74,6 +72,8 @@ async function uploadNewData(data, epsilon, price, calculatorAddress, onsuccess,
   encrypt.setPublicKey(rsadata)
   const cipherText = encrypt.encrypt(data)
   const params = ' '
+  console.log(encrypt)
+  console.log(cipherText)
   contract.methods
     .set_data(price, cipherText, params, epsilon, account)
     .send({
