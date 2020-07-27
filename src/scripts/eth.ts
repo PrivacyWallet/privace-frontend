@@ -150,6 +150,16 @@ function uploadNewData(
   )
 }
 
+/**
+ * 向服务端上传数据上传历史
+ */
+async function addData(
+  id: String,
+  price: Number,
+  epsilon: Number,
+  calculator: String
+): Promise<any> {}
+
 // Calculator
 
 /**

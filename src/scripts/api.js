@@ -7,7 +7,7 @@
  * */
 
 import abi from './abi'
-import JSEncrypt from 'jsencrypt'
+import JSEncrypt from 'encryptlong'
 // const abi = require('./abi.js')
 // const NodeRSA = require('node-rsa')
 // let fs = require('fs')
