@@ -109,12 +109,16 @@ async function getTransactionsAsDataOwner(): Promise<
  * 获得自己曾经提交的所有记录。
  * @returns calculatorAddress 外包计算者的合约地址
  */
-function getData(): Array<{
-  id: String
-  price: Number
-  epsilon: Number
-  calculatorContract: String
-}> {
+async function getData(): Promise<
+  Array<{
+    id: String
+    price: Number
+    epsilon: Number
+    calculatorContract: String
+  }>
+> {
+  const result = await services.getData()
+  console.log(result)
   return [
     {
       id: '0xabcdef',
@@ -153,12 +157,15 @@ function uploadNewData(
 /**
  * 向服务端上传数据上传历史
  */
-async function addData(
+async function setData(
   id: String,
   price: Number,
   epsilon: Number,
-  calculator: String
-): Promise<any> {}
+  calculatorContract: String,
+  address: String
+): Promise<any> {
+  return await services.setData(id, price, epsilon, calculatorContract, address)
+}
 
 // Calculator
 
@@ -180,6 +187,7 @@ export {
   getTransactionsAsDataOwner,
   uploadNewData,
   getData,
+  setData,
   getCalculators,
   addCalculator,
 }

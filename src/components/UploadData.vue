@@ -52,11 +52,11 @@
 <script>
 import Sheet from 'src/components/Sheet'
 import SelectCalculator from 'src/components/SelectCalculator'
-import { uploadNewData } from 'src/scripts/eth'
+import { uploadNewData, setData } from 'src/scripts/eth'
 
 export default {
   components: { Sheet, SelectCalculator },
-  props: ['func'],
+  props: ['func', 'account'],
   data: () => ({
     loading: false,
     finish: false,
@@ -72,8 +72,15 @@ export default {
       console.log(this.data, this.epsilon, this.price, this.calculator)
       const onsuccess = receipt => {
         console.log(receipt)
-        this.loading = false
-        this.finish = true
+        setData(' ', this.price, this.epsilon, this.calculator, this.account)
+          .then(() => {
+            this.loading = false
+            this.finish = true
+          })
+          .catch(error => {
+            console.error(error)
+            this.loading = false
+          })
       }
       const onfail = error => {
         this.loading = false

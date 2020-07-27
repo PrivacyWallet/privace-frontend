@@ -40,12 +40,8 @@
             />
           </q-td>
           <q-td v-for="col in props.cols" :key="col.name" :props="props">
-            <span v-if="col.value && col.value.length < 14">
-              {{ col.value }}
-            </span>
-            <span v-else-if="col.value && !col.value.startsWith('0x')">
-              {{ col.value }}
-            </span>
+            <span v-if="col.value && col.value.length < 14">{{ col.value }}</span>
+            <span v-else-if="col.value && !col.value.startsWith('0x')">{{ col.value }}</span>
             <span v-else>
               {{col.value.substring(0,10)}}
               <q-btn unelevated round v-clipboard="col.value" icon="content_copy"></q-btn>
@@ -142,6 +138,9 @@ export default {
   }),
   async created() {
     const data = await getTransactionsAsDataBuyer(this.account)
+    // for (let i = 0; i < data.length; i += 1) {
+    // data.id = i
+    // }
     // data = data.map(v => ({ ...v, date: v.date.toLocaleString() }))
     this.data = data
   },

@@ -38,8 +38,34 @@ async function getCalculators() {
   return data.map(v => v.calculator)
 }
 
+async function setData(id, price, epsilon, calculatorContract, address) {
+  const response = await axios.post('/setData', {
+    id,
+    price,
+    epsilon,
+    calculatorContract,
+    address,
+  })
+  console.log(response)
+}
+
+async function getData(address) {
+  address = '0x212f247a1e10075e5Fb8d3C9111008083D778BE6'
+  const response = await axios.get('/getData', {
+    params: { address },
+  })
+  const data = response.data
+  console.group('getData')
+  console.log(response)
+  console.log(data)
+  console.groupEnd('getData')
+  return data
+}
+
 export default {
   getTransactionsAsDataBuyer,
   getTransactionsAsDataOwner,
   getCalculators,
+  setData,
+  getData,
 }
