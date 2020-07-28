@@ -70,20 +70,20 @@ export default {
     uploadData() {
       this.loading = true
       console.log(this.data, this.epsilon, this.price, this.calculator)
-      const onsuccess = receipt => {
-        console.log(receipt)
-        setData(' ', this.price, this.epsilon, this.calculator, this.account)
-          .then(() => {
-            this.loading = false
-            this.finish = true
-          })
-          .catch(error => {
-            console.error(error)
-            this.loading = false
-          })
+      const that = this
+      const onsuccess = async receipt => {
+        this.loading = false
+        this.finish = true
+        await setData(
+          receipt.transactionHash,
+          this.price,
+          this.epsilon,
+          this.calculator,
+          this.account
+        )
       }
       const onfail = error => {
-        this.loading = false
+        that.loading = false
         console.log(error)
       }
       uploadNewData(
@@ -94,6 +94,7 @@ export default {
         onsuccess,
         onfail
       )
+      console.log('finish')
     },
   },
 }

@@ -5,7 +5,7 @@
       :columns="transactionsHistoryColumns"
       :visible-columns="transactionsHistoryVisibleColumns"
       row-key="id"
-      class="table col-sm-12 col-md-11 col-xl-11"
+      class="table col-sm-12 col-md-11 col-xl-11 q-ma-md"
     >
       <template v-slot:top="props">
         <div class="col-2 q-table__title">交易历史</div>
@@ -34,13 +34,14 @@
         </q-tr>
       </template>
     </q-table>
+    <q-spacer />
     <q-table
       title="上传数据历史"
       :data="dataHistory"
       :columns="dataHistoryColumns"
       :visible-columns="dataHistoryVisibleColumns"
       row-key="id"
-      class="table col-sm-11 col-md-8 col-xl-6"
+      class="table col-sm-11 col-md-8 col-xl-6 q-ma-md"
     >
       <template v-slot:top="props">
         <div class="col-2 q-table__title">上传数据历史</div>
@@ -111,16 +112,16 @@ export default {
     ],
     transactionsHistory: [],
     dataHistoryVisibleColumns: [
-      'bidStartID',
+      'id',
       'price',
       'epsilon',
       'calculatorContract',
     ],
     dataHistoryColumns: [
       {
-        name: 'bidStartID',
+        name: 'id',
         label: '交易ID',
-        field: 'bidStartID',
+        field: 'id',
         align: 'center',
       },
       { name: 'price', label: '价格', field: 'price', align: 'center' },
@@ -146,16 +147,14 @@ export default {
     },
   },
   async created() {
-    let data = await getTransactionsAsDataOwner()
+    let data = await getTransactionsAsDataOwner(this.account)
     console.log(data)
     console.log(data)
-    this.transactionsHistory = data
+    this.transactionsHistory = data.reverse()
 
-    data = await getData()
-    for (let i = 0; i < data.length; i += 1) {
-      data[i].id = i
-    }
-    this.dataHistory = data
+    data = await getData(this.account)
+    console.log("data",data)
+    this.dataHistory = data.reverse()
   },
 }
 </script>

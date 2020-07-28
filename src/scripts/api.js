@@ -22,13 +22,13 @@ async function createNewTransaction(
   calculatorAddress,
   bindata,
   onsuccess,
-  onfail,
+  onfail
 ) {
+  console.log('createNewTransaction', queryType, query, resultType)
   const web3 = window.web3
-  const myContract =new web3.eth.Contract(abi.Inter)
+  const myContract = new web3.eth.Contract(abi.Inter)
   const account = await web3.eth.getCoinbase()
-  var tran;
-  tran =await myContract
+  const tran = await myContract
     .deploy({
       data: bindata,
     })
@@ -41,19 +41,18 @@ async function createNewTransaction(
       function(error, transactionHash) {
         console.log(error)
       }
-    );
-  console.log(tran);
+    )
+  console.log(tran)
   console.log(tran._address)
   const contract = new web3.eth.Contract(abi.Calc, calculatorAddress)
-  var json
-  json=JSON.stringify({
-    queryType:queryType,
-    query:query,
-    resultType:resultType,
-  });
+  const json = JSON.stringify({
+    queryType: queryType,
+    query: query,
+    resultType: resultType,
+  })
   const buyercontract = new web3.eth.Contract(abi.Inter, tran._address)
   console.log(json)
-      await buyercontract.methods
+  await buyercontract.methods
     .set_requirements(json)
     .send({
       gas: 3000000,
@@ -61,21 +60,26 @@ async function createNewTransaction(
       from: account,
       // 'nonce' : web3.eth.getTransactionCount(this.account.address),
     })
-    .on('receipt', onsuccess)
+    .on('receipt', () => {})
     .on('error', onfail)
-  await contract.methods
-    .bid(tran._address)
-    .send({
-      gas: 3000000,
-      gasPrice: web3.utils.toWei('1', 'gwei'),
-      from: account,
-      // 'nonce' : web3.eth.getTransactionCount(this.account.address),
-      value: budget,
-    })
-    .on('receipt', onsuccess)
-    .on('error', onfail)
+  await contract.methods.bid(tran._address).send({
+    gas: 3000000,
+    gasPrice: web3.utils.toWei('1', 'gwei'),
+    from: account,
+    // 'nonce' : web3.eth.getTransactionCount(this.account.address),
+    value: budget,
+  })
+   .on('receipt', onsuccess)
+   .on('error', onfail)
 }
-async function uploadNewData(data, epsilon, price, calculatorAddress, onsuccess, onfail) {
+async function uploadNewData(
+  data,
+  epsilon,
+  price,
+  calculatorAddress,
+  onsuccess,
+  onfail
+) {
   const rsadata =
     '-----BEGIN PUBLIC KEY-----\n' +
     'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCpNPFNLwGq2Q+Bf/JWEu7ajvrr\n' +
