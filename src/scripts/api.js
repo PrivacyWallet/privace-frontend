@@ -7,7 +7,7 @@
  * */
 
 import abi from './abi'
-import JSEncrypt from 'encryptlong'
+import JSEncrypt from 'jsencrypt'
 // const abi = require('./abi.js')
 // const NodeRSA = require('node-rsa')
 // let fs = require('fs')
@@ -43,7 +43,26 @@ async function createNewTransaction(
       }
     );
   console.log(tran);
+  console.log(tran._address)
   const contract = new web3.eth.Contract(abi.Calc, calculatorAddress)
+  var json
+  json=JSON.stringify({
+    queryType:queryType,
+    query:query,
+    resultType:resultType,
+  });
+  const buyercontract = new web3.eth.Contract(abi.Inter, tran._address)
+  console.log(json)
+      await buyercontract.methods
+    .set_requirements(json)
+    .send({
+      gas: 3000000,
+      gasPrice: web3.utils.toWei('1', 'gwei'),
+      from: account,
+      // 'nonce' : web3.eth.getTransactionCount(this.account.address),
+    })
+    .on('receipt', onsuccess)
+    .on('error', onfail)
   await contract.methods
     .bid(tran._address)
     .send({
@@ -56,7 +75,6 @@ async function createNewTransaction(
     .on('receipt', onsuccess)
     .on('error', onfail)
 }
-
 async function uploadNewData(data, epsilon, price, calculatorAddress, onsuccess, onfail) {
   const rsadata =
     '-----BEGIN PUBLIC KEY-----\n' +
