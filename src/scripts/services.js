@@ -5,21 +5,20 @@ const host = 'http://localhost:3000'
 axios.defaults.baseURL = host
 
 async function getTransactionsAsDataBuyer(address) {
-  address = '0x013293a2e8c40b46bb11f1ca23b3e00e1ac86d57'
   const response = await axios.get('/getTransactionsAsDataBuyer', {
     params: { address },
   })
   let data = response.data
   data = data.map(v => ({ ...v, transactions: JSON.parse(v.transactions) }))
-  console.group('get data')
+  console.group('get data buyer')
+  console.log(address)
   console.log(response)
   console.log(data)
-  console.groupEnd('get data')
+  console.groupEnd('get data buyer')
   return data
 }
 
 async function getTransactionsAsDataOwner(address) {
-  address = '0x212f247a1e10075e5Fb8d3C9111008083D778BE6'
   const response = await axios.get('/getTransactionsAsDataOwner', {
     params: { address },
   })
@@ -38,8 +37,32 @@ async function getCalculators() {
   return data.map(v => v.calculator)
 }
 
+function setData(id, price, epsilon, calculatorContract, address) {
+  return axios.post('/setData', {
+    id,
+    price,
+    epsilon,
+    calculatorContract,
+    address,
+  })
+}
+
+async function getData(address) {
+  const response = await axios.get('/getData', {
+    params: { address },
+  })
+  const data = response.data
+  console.group('getData')
+  console.log(response)
+  console.log(data)
+  console.groupEnd('getData')
+  return data
+}
+
 export default {
   getTransactionsAsDataBuyer,
   getTransactionsAsDataOwner,
   getCalculators,
+  setData,
+  getData,
 }

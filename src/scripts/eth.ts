@@ -53,7 +53,7 @@ async function getTransactionsAsDataBuyer(
     transactions: Array<{ to: String; payment: Number }>
   }>
 > {
-  return await services.getTransactionsAsDataBuyer(address)
+  return services.getTransactionsAsDataBuyer(address)
 }
 
 /**
@@ -92,7 +92,9 @@ function createNewTransaction(
  * @param id trasaction id，这个应该是 bidEnd 的 ID。
  * @param dataBuyerContractAddress 数据购买者的合约地址
  */
-async function getTransactionsAsDataOwner(): Promise<
+async function getTransactionsAsDataOwner(
+  address: String
+): Promise<
   Array<{
     id: String
     date: Date
@@ -102,27 +104,24 @@ async function getTransactionsAsDataOwner(): Promise<
     dataBuyerContractAddress: String
   }>
 > {
-  return services.getTransactionsAsDataOwner()
+  return services.getTransactionsAsDataOwner(address)
 }
 
 /**
  * 获得自己曾经提交的所有记录。
  * @returns calculatorAddress 外包计算者的合约地址
  */
-function getData(): Array<{
-  id: String
-  price: Number
-  epsilon: Number
-  calculatorContract: String
-}> {
-  return [
-    {
-      id: '0xabcdef',
-      price: 40,
-      epsilon: 30,
-      calculatorContract: 'calculator Contract address 1',
-    },
-  ]
+async function getData(
+  address: String
+): Promise<
+  Array<{
+    id: String
+    price: Number
+    epsilon: Number
+    calculatorContract: String
+  }>
+> {
+  return services.getData(address)
 }
 
 /**
@@ -153,12 +152,15 @@ function uploadNewData(
 /**
  * 向服务端上传数据上传历史
  */
-async function addData(
+async function setData(
   id: String,
   price: Number,
   epsilon: Number,
-  calculator: String
-): Promise<any> {}
+  calculatorContract: String,
+  address: String
+): Promise<any> {
+  await services.setData(id, price, epsilon, calculatorContract, address)
+}
 
 // Calculator
 
@@ -180,6 +182,7 @@ export {
   getTransactionsAsDataOwner,
   uploadNewData,
   getData,
+  setData,
   getCalculators,
   addCalculator,
 }

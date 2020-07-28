@@ -22,13 +22,13 @@ async function createNewTransaction(
   calculatorAddress,
   bindata,
   onsuccess,
-  onfail,
+  onfail
 ) {
+  console.log('createNewTransaction', queryType, query, resultType)
   const web3 = window.web3
-  const myContract =new web3.eth.Contract(abi.Inter)
+  const myContract = new web3.eth.Contract(abi.Inter)
   const account = await web3.eth.getCoinbase()
-  var tran;
-  tran =await myContract
+  const tran = await myContract
     .deploy({
       data: bindata,
     })
@@ -70,10 +70,18 @@ async function createNewTransaction(
       gasPrice: web3.utils.toWei('1', 'gwei'),
       from: account,
       // 'nonce' : web3.eth.getTransactionCount(this.account.address),
-      value: budget,
     })
-    .on('receipt', onsuccess)
+    .on('receipt', () => {})
     .on('error', onfail)
+  await contract.methods.bid(tran._address).send({
+    gas: 3000000,
+    gasPrice: web3.utils.toWei('1', 'gwei'),
+    from: account,
+    // 'nonce' : web3.eth.getTransactionCount(this.account.address),
+    value: budget,
+  })
+   .on('receipt', onsuccess)
+   .on('error', onfail)
 }
 async function uploadNewData(data, epsilon, price, calculatorAddress, onsuccess, onfail) {
   const rsadata =
