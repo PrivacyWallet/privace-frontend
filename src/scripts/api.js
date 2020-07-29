@@ -7,7 +7,7 @@
  * */
 
 import abi from './abi'
-import JSEncrypt from 'jsencrypt'
+import JSEncrypt from 'encryptlong'
 // const abi = require('./abi.js')
 // const NodeRSA = require('node-rsa')
 // let fs = require('fs')
@@ -63,16 +63,6 @@ async function createNewTransaction(
     })
     .on('receipt', onsuccess)
     .on('error', onfail)
-  await contract.methods
-    .bid(tran._address)
-    .send({
-      gas: 3000000,
-      gasPrice: web3.utils.toWei('1', 'gwei'),
-      from: account,
-      // 'nonce' : web3.eth.getTransactionCount(this.account.address),
-    })
-    .on('receipt', () => {})
-    .on('error', onfail)
   await contract.methods.bid(tran._address).send({
     gas: 3000000,
     gasPrice: web3.utils.toWei('1', 'gwei'),
@@ -86,10 +76,13 @@ async function createNewTransaction(
 async function uploadNewData(data, epsilon, price, calculatorAddress, onsuccess, onfail) {
   const rsadata =
     '-----BEGIN PUBLIC KEY-----\n' +
-    'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCpNPFNLwGq2Q+Bf/JWEu7ajvrr\n' +
-    'iH4wEzbDmcR/6Kw7BCFAPkvxviBis/QBB0uCwv8By99fFMKllGQZZk4XudpzWumt\n' +
-    '7EjbZci4AlCbOx95wGHpc46FGqPGI2Iy1fViaiWq36PjNxRlY8tjQURZDCRluadv\n' +
-    'XlmhMMlxHs6+XllzQQIDAQAB\n' +
+    'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA61u0yB8hGtizMyNuPNvY\n' +
+    'oGnhbVm55AmHpLBDXNOMks7l+InHyo6A1BchjxVQUNB+YKb1aV7UfHU1pJQ5fJYs\n' +
+    'fOx+daK0C8NU30168diQ9E5Il6uhLG/OmnglqExJPsjorzd+smIyjdaWG8nJNJOL\n' +
+    'VKOxiaJCCVTL+wH98BXjSRKaQ0437bCt1hxUSiHiuxvgFbZ6pp7e2WGftfkXIltc\n' +
+    'LXzFPees0Zd1HZ/PDQzTkkRQ96ygw5hXZ6DnpSPl25H4ncRIgZgTD14fDE1EICND\n' +
+    '6CFQXzK/GoX9dFNN/7ubaWLKVw7aMHK0B7TxyIwjqUt8gthOaT//XWk/IzntI6n+\n' +
+    'JQIDAQAB\n' +
     '-----END PUBLIC KEY-----'
   const web3 = window.web3
   const contract = new web3.eth.Contract(abi.Calc, calculatorAddress)
@@ -100,15 +93,17 @@ async function uploadNewData(data, epsilon, price, calculatorAddress, onsuccess,
   const params = ' '
   console.log(encrypt)
   console.log(cipherText)
-  contract.methods
-    .set_data(price, cipherText, params, epsilon, account)
+  var tran
+  tran=await contract.methods
+  .set_data(price, cipherText, params, epsilon, account)
     .send({
       gas: 1000000,
       gasPrice: web3.utils.toWei('1', 'gwei'),
       from: account,
     })
-    .on('receipt', onsuccess)
-    .on('error', onfail)
+    console.log(tran.transactionHash)
+    return tran.transactionHash
 }
+
 
 export default { createNewTransaction, uploadNewData }
