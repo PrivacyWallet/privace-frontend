@@ -82,8 +82,22 @@ export default {
   name: 'PageIndex',
   components: { CreateTransaction },
   props: ['account'],
+  watch: {
+    account: function() {
+      this.update()
+    },
+  },
   methods: {
-    toggleFAB: function() {
+    async update() {
+      let data = await getTransactionsAsDataBuyer(this.account)
+      data = data.map(v => ({
+        ...v,
+        result: JSON.parse(v.result),
+      }))
+      this.data = data.reverse()
+    },
+    toggleFAB: async function() {
+      this.update()
       this.on = !this.on
     },
   },
@@ -98,7 +112,6 @@ export default {
       'date',
       'status',
       'deployedContract',
-      'calculatorContract',
       'result',
     ],
     columns: [
@@ -123,12 +136,6 @@ export default {
         align: 'center',
       },
       {
-        name: 'calculatorContract',
-        label: '外包计算者合约',
-        field: 'calculatorAddress',
-        align: 'center',
-      },
-      {
         name: 'result',
         label: '结果',
         field: 'result',
@@ -139,12 +146,10 @@ export default {
     on: false,
     data: [],
   }),
-  async created() {
+  async mounted() {
     console.log(this.account)
-    if (!this.account) 
-      return 
-    const data = await getTransactionsAsDataBuyer(this.account)
-    this.data = data.reverse()
+    if (!this.account) return
+    this.update()
   },
 }
 </script>

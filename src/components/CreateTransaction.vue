@@ -107,7 +107,7 @@ export default {
       resultType: '',
       query: '',
       queryType: '',
-      budget: 1,
+      budget: 100000,
     },
     calculator: '',
   }),

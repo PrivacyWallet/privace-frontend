@@ -29,12 +29,11 @@
               {{col.value.substring(0,10)}}
               <q-btn unelevated round v-clipboard="col.value" icon="content_copy"></q-btn>
             </span>
-            <span v-else> </span>
+            <span v-else></span>
           </q-td>
         </q-tr>
       </template>
     </q-table>
-    <q-spacer />
     <q-table
       title="上传数据历史"
       :data="dataHistory"
@@ -59,12 +58,14 @@
         <q-tr :props="props">
           <q-td v-for="col in props.cols" :key="col.name" :props="props">
             <span v-if="col.value && col.value.length < 14">{{ col.value }}</span>
-            <span v-else-if="col.value && col.value.startsWith &&!col.value.startsWith('0x')">{{ col.value }}</span>
+            <span
+              v-else-if="col.value && col.value.startsWith &&!col.value.startsWith('0x')"
+            >{{ col.value }}</span>
             <span v-else-if="col.value && typeof(col.value) == 'string'">
               {{col.value.substring(0,10)}}
               <q-btn unelevated round v-clipboard="col.value" icon="content_copy"></q-btn>
             </span>
-            <span v-else> {{col.value}} </span>
+            <span v-else>{{col.value}}</span>
           </q-td>
         </q-tr>
       </template>
@@ -98,7 +99,7 @@ export default {
       'dataBuyerContractAddress',
     ],
     transactionsHistoryColumns: [
-      { name: 'id', label: '合约地址', field: 'id', align: 'center' },
+      { name: 'id', label: '合约地址', field: 'bidStartID', align: 'center' },
       { name: 'date', label: '日期', field: 'date', align: 'center' },
       { name: 'status', label: '状态', field: 'status', align: 'center' },
       { name: 'payment', label: '支付金额', field: 'payment', align: 'center' },
@@ -111,12 +112,7 @@ export default {
       },
     ],
     transactionsHistory: [],
-    dataHistoryVisibleColumns: [
-      'id',
-      'price',
-      'epsilon',
-      'calculatorContract',
-    ],
+    dataHistoryVisibleColumns: ['id', 'price', 'epsilon', 'calculatorContract'],
     dataHistoryColumns: [
       {
         name: 'id',
@@ -141,20 +137,27 @@ export default {
     dataHistory: [],
     on: false,
   }),
+  watch: {
+    account: async function() {
+      await this.update()
+    },
+  },
   methods: {
-    toggleFAB: function() {
+    update: async function() {
+      let data = await getTransactionsAsDataOwner(this.account)
+      this.transactionsHistory = data.reverse()
+
+      data = await getData(this.account)
+      this.dataHistory = data.reverse()
+    },
+    toggleFAB: async function() {
       this.on = !this.on
+      await this.update()
     },
   },
   async created() {
-    let data = await getTransactionsAsDataOwner(this.account)
-    console.log(data)
-    console.log(data)
-    this.transactionsHistory = data.reverse()
-
-    data = await getData(this.account)
-    console.log("data",data)
-    this.dataHistory = data.reverse()
+    if (!this.account) return
+    await this.update()
   },
 }
 </script>

@@ -53,7 +53,7 @@ async function getTransactionsAsDataBuyer(
     transactions: Array<{ to: String; payment: Number }>
   }>
 > {
-  return services.getTransactionsAsDataBuyer(address)
+  return services.getTransactionsAsDataBuyer(address.toUpperCase())
 }
 
 /**
