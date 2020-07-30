@@ -41,19 +41,19 @@ async function createNewTransaction(
       function(error, transactionHash) {
         console.log(error)
       }
-    );
-  console.log(tran);
+    )
+  console.log(tran)
   console.log(tran._address)
   const contract = new web3.eth.Contract(abi.Calc, calculatorAddress)
   var json
-  json=JSON.stringify({
-    queryType:queryType,
-    query:query,
-    resultType:resultType,
-  });
+  json = JSON.stringify({
+    queryType: queryType,
+    query: query,
+    resultType: resultType,
+  })
   const buyercontract = new web3.eth.Contract(abi.Inter, tran._address)
   console.log(json)
-      await buyercontract.methods
+  await buyercontract.methods
     .set_requirements(json)
     .send({
       gas: 3000000,
@@ -61,19 +61,28 @@ async function createNewTransaction(
       from: account,
       // 'nonce' : web3.eth.getTransactionCount(this.account.address),
     })
+    .on('receipt', ()=>{})
+    .on('error', onfail)
+  await contract.methods
+    .bid(tran._address)
+    .send({
+      gas: 3000000,
+      gasPrice: web3.utils.toWei('1', 'gwei'),
+      from: account,
+      // 'nonce' : web3.eth.getTransactionCount(this.account.address),
+      value: budget,
+    })
     .on('receipt', onsuccess)
     .on('error', onfail)
-  await contract.methods.bid(tran._address).send({
-    gas: 3000000,
-    gasPrice: web3.utils.toWei('1', 'gwei'),
-    from: account,
-    // 'nonce' : web3.eth.getTransactionCount(this.account.address),
-    value: budget,
-  })
-   .on('receipt', onsuccess)
-   .on('error', onfail)
 }
-async function uploadNewData(data, epsilon, price, calculatorAddress, onsuccess, onfail) {
+async function uploadNewData(
+  data,
+  epsilon,
+  price,
+  calculatorAddress,
+  onsuccess,
+  onfail
+) {
   const rsadata =
     '-----BEGIN PUBLIC KEY-----\n' +
     'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA61u0yB8hGtizMyNuPNvY\n' +
@@ -94,16 +103,17 @@ async function uploadNewData(data, epsilon, price, calculatorAddress, onsuccess,
   console.log(encrypt)
   console.log(cipherText)
   var tran
-  tran=await contract.methods
-  .set_data(price, cipherText, params, epsilon, account)
+  tran = await contract.methods
+    .set_data(price, cipherText, params, epsilon, account)
     .send({
       gas: 1000000,
       gasPrice: web3.utils.toWei('1', 'gwei'),
       from: account,
     })
-    console.log(tran.transactionHash)
-    return tran.transactionHash
+    .on('receipt', onsuccess)
+    .on('error', onfail)
+  console.log(tran.transactionHash)
+  return tran.transactionHash
 }
-
 
 export default { createNewTransaction, uploadNewData }

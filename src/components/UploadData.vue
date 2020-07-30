@@ -1,6 +1,13 @@
 <template>
   <div class="q-pa-md">
-    <q-stepper v-model="step" vertical color="primary" animated class="stepper">
+    <q-stepper
+      v-model="step"
+      v-on:keyup.enter="generateRandomData"
+      vertical
+      color="primary"
+      animated
+      class="stepper"
+    >
       <span class="text-h6 q-mx-md">上传新的数据</span>
       <q-step :name="1" title="填写表单" icon="settisngs" :done="step > 1">
         <Sheet :data="data" />
@@ -53,6 +60,7 @@
 import Sheet from 'src/components/Sheet'
 import SelectCalculator from 'src/components/SelectCalculator'
 import { uploadNewData, setData } from 'src/scripts/eth'
+import form from 'src/scripts/forms'
 
 export default {
   components: { Sheet, SelectCalculator },
@@ -95,6 +103,44 @@ export default {
         onfail
       )
       console.log('finish')
+    },
+    generateRandomData() {
+      console.log('generate Random data')
+      const getRandomInt = max => {
+        return Math.floor(Math.random() * Math.floor(max - 1))
+      }
+      this.$set(this.data, 'age', getRandomInt(80))
+      this.$set(
+        this.data,
+        'gender',
+        form.gender[getRandomInt(form.gender.length)]
+      )
+      this.$set(
+        this.data,
+        'occupation',
+        form.occupation[getRandomInt(form.occupation.length)]
+      )
+      this.$set(
+        this.data,
+        'education',
+        form.education[getRandomInt(form.education.length)]
+      )
+      this.$set(this.data, 'income', getRandomInt(20000))
+      this.$set(
+        this.data,
+        'hometown',
+        form.hometown[getRandomInt(form.hometown.length)]
+      )
+      this.$set(
+        this.data,
+        'maritalStatus',
+        form.maritalStatus[getRandomInt(form.maritalStatus.length)]
+      )
+      this.$set(
+        this.data,
+        'wentTo',
+        form.wentTo[getRandomInt(form.wentTo.length)]
+      )
     },
   },
 }

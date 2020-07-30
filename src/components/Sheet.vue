@@ -50,5 +50,8 @@ export default {
   data: () => ({
     form: form,
   }),
+  methods: {
+
+  },
 }
 </script>

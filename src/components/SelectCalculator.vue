@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-select v-model="calculator" :options="options" />
-    <q-input v-model="calculator" />
+    <!--<q-input v-model="calculator" /> -->
   </div>
 </template>
 

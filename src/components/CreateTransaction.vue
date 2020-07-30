@@ -1,17 +1,18 @@
 <template>
   <div class="q-pa-md">
-    <q-stepper v-model="step" vertical color="primary" animated class="stepper">
+    <q-stepper v-model="step" vertical color="accent" animated class="stepper">
       <span class="text-h6 q-mx-md">创建新的交易</span>
-      {{newTransaction}}
-      <q-step :name="1" title="设置交易参数" icon="settisngs" :done="step > 1">
+      <q-step :name="1" title="设置交易参数" icon="settisngs" color="accent" :done="step > 1">
         <!--<q-select v-model="newTransaction.filter" :options="filterOptions" label="筛选类型"></q-select>-->
         <q-select
+          color="accent"
           v-model="newTransaction.queryType"
           :options="queryTypeOptions"
           :rules="[val => !!val || '此项为必填项']"
           label="查询类型"
         ></q-select>
         <q-select
+          color="accent"
           v-if="newTransaction.queryType.type === 'String'"
           v-model="newTransaction.query"
           :rules="[val => !!val || '此项为必填项']"
@@ -20,37 +21,38 @@
         ></q-select>
         <q-input
           readonly
+          color="accent"
           v-model="newTransaction.resultType"
           :options="resultTypeOptions"
           label="计算结果类型"
         ></q-input>
         <q-input v-model.number="newTransaction.budget" type="number" label="预算"></q-input>
         <q-stepper-navigation>
-          <q-btn @click="step = 2" color="primary" label="继续" />
+          <q-btn @click="step = 2" color="primary" label="继续" class="bg-accent" />
         </q-stepper-navigation>
       </q-step>
 
-      <q-step :name="2" title="选择拍卖合约" icon="create_new_folder" :done="step > 2">
+      <q-step :name="2" title="选择拍卖合约" icon="create_new_folder" color="accent" :done="step > 2">
         <SelectCalculator v-model="calculator" />
         <q-stepper-navigation>
-          <q-btn @click="step = 3" color="primary" label="继续" />
-          <q-btn flat @click="step = 1" color="primary" label="返回" class="q-ml-sm" />
+          <q-btn @click="step = 3" color="accent" label="继续"  class="bg-accent"/>
+          <q-btn flat @click="step = 1" color="accent" label="返回" class="q-ml-sm text-accent" />
         </q-stepper-navigation>
       </q-step>
 
-      <q-step :name="3" title="生成新的合约" icon="add_comment">
+      <q-step :name="3" title="生成新的合约" color="accent"  icon="add_comment">
         可以返回历史交易记录页面查看最新的合约。
         <q-stepper-navigation>
           <q-btn
-            :color="finish? 'positive':'primary'"
+            :color="finish? 'positive':'accent'"
             :label="finish? '完成' : '提交'"
             :icon="finish?'done':'cloud_upload'"
             :disable="finish"
             :loading="loading"
             @click="create"
           />
-          <q-btn flat @click="step = 2" color="primary" label="Back" class="q-ml-sm" />
-          <q-btn color="primary" label="关闭" @click="func" />
+          <q-btn flat @click="step = 2" color="accent" label="Back" class="q-ml-sm" />
+          <q-btn color="accent" label="关闭" @click="func" />
         </q-stepper-navigation>
       </q-step>
     </q-stepper>

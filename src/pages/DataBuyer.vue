@@ -110,9 +110,12 @@ export default {
       'bidStartID',
       'bidEndID',
       'date',
-      'status',
+      // 'status',
+
       'deployedContract',
-      'result',
+      'queryType',
+      'resultType',
+      'resultresult',
     ],
     columns: [
       {
@@ -140,6 +143,30 @@ export default {
         label: '结果',
         field: 'result',
         align: 'center',
+      },
+      {
+        name: 'queryType',
+        label: '查询类型',
+        field: row => row.result.queryType,
+        align: 'center',
+        classes: 'text-accent',
+        headerClasses: 'bg-purple-3'
+      },
+      {
+        name: 'resultType',
+        label: '查询结果类型',
+        field: row => row.result.resultType,
+        align: 'center',
+        classes: 'text-accent',
+        headerClasses: 'bg-purple-3'
+      },
+      {
+        name: 'resultresult',
+        label: '查询结果',
+        field: row => row.result.result,
+        align: 'center',
+        classes: 'text-accent',
+        headerClasses: 'bg-purple-3'
       },
       { name: 'transactions', label: 'details', field: 'transactions' },
     ],
