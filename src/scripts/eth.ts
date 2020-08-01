@@ -70,6 +70,7 @@ function createNewTransaction(
   resultType: String,
   budget: Number,
   calculatorContract: String,
+  publicKey: String,
   onsuccess: (receipt: any) => void,
   onfail: (error: any) => void
 ): void {
@@ -79,6 +80,7 @@ function createNewTransaction(
     resultType,
     budget,
     calculatorContract,
+    publicKey,
     bytecode,
     onsuccess,
     onfail

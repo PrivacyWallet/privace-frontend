@@ -35,13 +35,29 @@
       <q-step :name="2" title="选择拍卖合约" icon="create_new_folder" color="accent" :done="step > 2">
         <SelectCalculator v-model="calculator" />
         <q-stepper-navigation>
-          <q-btn @click="step = 3" color="accent" label="继续"  class="bg-accent"/>
+          <q-btn @click="step = 3" color="accent" label="继续" class="bg-accent" />
           <q-btn flat @click="step = 1" color="accent" label="返回" class="q-ml-sm text-accent" />
         </q-stepper-navigation>
       </q-step>
 
-      <q-step :name="3" title="生成新的合约" color="accent"  icon="add_comment">
-        可以返回历史交易记录页面查看最新的合约。
+      <q-step :name="3" title="上传自己的公钥" icon="create_new_folder" color="accent" :done="step > 2">
+        <q-input
+          v-model="publicKey"
+          placeholder="-----BEGIN PUBLIC KEY-----"
+          hint="此公钥将用于结果的加密"
+          filled
+          v-on:keyup.enter="autoUpdatePublicKey"
+          type="textarea"
+        ></q-input>
+        <q-stepper-navigation>
+          <q-btn @click="step = 4" color="accent" label="继续" class="bg-accent" />
+          <q-btn flat @click="step = 2" color="accent" label="返回" class="q-ml-sm text-accent" />
+        </q-stepper-navigation>
+      </q-step>
+
+      <q-step :name="4" title="生成新的合约" color="accent" icon="add_comment">
+        注意：此处将会产生三笔交易。前两笔用于购买者的智能合约的部署和设定参数，
+        后者用于向外包计算者发起请求。
         <q-stepper-navigation>
           <q-btn
             :color="finish? 'positive':'accent'"
@@ -84,9 +100,21 @@ export default {
         this.newTransaction.resultType,
         this.newTransaction.budget,
         this.calculator,
+        this.publicKey,
         onsuccess,
         onfail
       )
+    },
+    autoUpdatePublicKey() {
+      this.publicKey = `-----BEGIN RSA PUBLIC KEY-----
+MIIBCgKCAQEAvtF217vhDBjfT5cyQ9kM23WLBy5Kk3Gyuf3dWlIb3ttoDjLvgwEf
+AgOgRHoXwySM/DgjoatdN23yH9e2MP4XqRIXqh7Kkh2MwCny6R9Sp0Ea64pXFUne
+llf1ONy940EpQnwZbbXDGQakMJeJjkdxKM4+rX2ZmZD6rRre0EW8GA1VU84755U9
+iPXDPMsgnbUQR3au1c9/I6a7XLWWIYy2483Hly0NXAjjpnbKBBQMOm46HgLHprAt
+qzmcF6+NvZgCbSMEPIDjeM9T5JdgWGC1mYla2K46k5Q5dn1E8IwSnrYFg0CM+CvG
+82AIB9W6OWSqZde84SnKGSEcHGgEU0UgvwIDAQAB
+-----END RSA PUBLIC KEY-----
+`
     },
   },
   data: () => ({
@@ -112,6 +140,7 @@ export default {
       budget: 100000,
     },
     calculator: '',
+    publicKey: '',
   }),
   watch: {
     'newTransaction.queryType': function(newVal) {
