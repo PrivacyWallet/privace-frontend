@@ -51,7 +51,7 @@ async function createNewTransaction(
     queryType: queryType,
     query: query,
     resultType: resultType,
-    publicKey,
+    publickey: publicKey,
   })
   const buyercontract = new web3.eth.Contract(abi.Inter, tran._address)
   console.log(json)
