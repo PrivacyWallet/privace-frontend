@@ -26,7 +26,7 @@
           :options="resultTypeOptions"
           label="计算结果类型"
         ></q-input>
-        <q-input v-model.number="newTransaction.budget" type="number" label="预算"></q-input>
+        <q-input v-model.number="newTransaction.budget" hint="单位: wei" type="number" label="预算"></q-input>
         <q-stepper-navigation>
           <q-btn @click="step = 2" color="primary" label="继续" class="bg-accent" />
         </q-stepper-navigation>
@@ -137,7 +137,7 @@ qzmcF6+NvZgCbSMEPIDjeM9T5JdgWGC1mYla2K46k5Q5dn1E8IwSnrYFg0CM+CvG
       resultType: '',
       query: '',
       queryType: '',
-      budget: 100000,
+      budget: 100000000,
     },
     calculator: '',
     publicKey: '',
