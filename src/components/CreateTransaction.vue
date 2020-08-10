@@ -124,7 +124,6 @@ qzmcF6+NvZgCbSMEPIDjeM9T5JdgWGC1mYla2K46k5Q5dn1E8IwSnrYFg0CM+CvG
     queryTypeOptions: [
       { value: 'age', label: '年龄', type: 'Number' },
       { value: 'gender', label: '性别', type: 'String' },
-      { value: 'occupation', label: '职业', type: 'String' },
       { value: 'income', label: '收入', type: 'Number' },
       { value: 'hometown', label: '居住地', type: 'String' },
       { value: 'education', label: '学历', type: 'String' },

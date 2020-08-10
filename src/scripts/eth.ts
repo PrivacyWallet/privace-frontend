@@ -13,7 +13,6 @@ export function register(): String {
 interface Form {
   age: Number
   gender: String
-  occupation: String
   income: Number
   hometown: String
   education: String

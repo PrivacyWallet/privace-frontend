@@ -7,12 +7,6 @@
       :options="form.gender"
       :rules="[val => !!val || '此项为必填项']"
     />
-    <q-select
-      label="职业"
-      v-model="data.occupation"
-      :options="form.occupation"
-      :rules="[val => !!val || '此项为必填项']"
-    />
     <q-input label="收入" v-model="data.income" :rules="[val => !!val || '此项为必填项']" />
     <q-select
       label="居住地"

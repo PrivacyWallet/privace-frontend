@@ -117,11 +117,6 @@ export default {
       )
       this.$set(
         this.data,
-        'occupation',
-        form.occupation[getRandomInt(form.occupation.length)]
-      )
-      this.$set(
-        this.data,
         'education',
         form.education[getRandomInt(form.education.length)]
       )
