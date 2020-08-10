@@ -21,9 +21,9 @@
           v-model="epsilon"
           :rules="[val => !!val || '此项为必填项']"
           title="隐私保护因子"
-          hint="该值越小，隐私保护程度越高"
+          hint="该值越小，隐私保护程度越高,范围: [1,100]"
         />
-        <q-input v-model="price" :rules="[val => !!val || '此项为必填项']" title="价格" hint="购买者将按照该金额支付" />
+        <q-input v-model="price" :rules="[val => !!val || '此项为必填项']" title="价格" hint="购买者将按照该金额支付，单位: wei" />
         <q-stepper-navigation>
           <q-btn @click="step = 3" color="primary" label="Continue" />
           <q-btn flat @click="step = 1" color="primary" label="返回" class="q-ml-sm" />
