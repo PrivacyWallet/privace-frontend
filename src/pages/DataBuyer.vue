@@ -10,7 +10,6 @@
     >
       <template v-slot:top="props">
         <div class="col-2 q-table__title">交易历史</div>
-
         <q-space />
         <q-btn
           flat
@@ -38,6 +37,7 @@
               @click="props.expand = !props.expand"
               :icon="props.expand ? 'remove' : 'add'"
             />
+            <q-btn flat round dense icon="vpn_key" @click="print(props.rowIndex)" class="q-ml-md" />
           </q-td>
           <q-td v-for="col in props.cols" :key="col.name" :props="props">
             <span v-if="col.value && col.value.length < 14">{{ col.value }}</span>
@@ -71,12 +71,66 @@
     <q-dialog v-model="on">
       <CreateTransaction :func="toggleFAB"></CreateTransaction>
     </q-dialog>
+    <q-dialog v-model="prikeyPrompt" persistent>
+      <q-card style="min-width: 400px">
+        <q-card-section>
+          <div class="text-h6">请输入解密用的私钥</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <q-input
+            dense
+            v-model="prikey"
+            type="textarea"
+            cols="120"
+            rows="20"
+            autofocus
+            @keyup.enter="autofillprikey"
+          />
+        </q-card-section>
+
+        <q-card-actions align="right" class="text-primary">
+          <q-btn flat label="确认" @click="closePrompt" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
 <script>
 import CreateTransaction from 'src/components/CreateTransaction'
 import { getTransactionsAsDataBuyer } from 'src/scripts/eth'
+import { decrypt } from 'src/scripts/api'
+
+const prikey = `-----BEGIN PRIVATE KEY-----
+MIIExAIBADANBgkqhkiG9w0BAQEFAASCBK4wggSqAgEAAoIBAQC+0XbXu+EMGN9P
+lzJD2QzbdYsHLkqTcbK5/d1aUhve22gOMu+DAR8CA6BEehfDJIz8OCOhq103bfIf
+17Yw/hepEheqHsqSHYzAKfLpH1KnQRrrilcVSd6WV/U43L3jQSlCfBlttcMZBqQw
+l4mOR3Eozj6tfZmZkPqtGt7QRbwYDVVTzjvnlT2I9cM8yyCdtRBHdq7Vz38jprtc
+tZYhjLbjzceXLQ1cCOOmdsoEFAw6bjoeAsemsC2rOZwXr429mAJtIwQ8gON4z1Pk
+l2BYYLWZiVrYrjqTlDl2fUTwjBKetgWDQIz4K8bzYAgH1bo5ZKpl17zhKcoZIRwc
+aARTRSC/AgMBAAECggEBAIcR0iPHM/fSK1A1YDkyjK1TuMOues9/rdmF34etk1je
+yfszBuMeigps8qdGHUfeuYVXX7FykZtI0hjEIozvb2QYEHQ1M4LWM+laSD3IFEOc
+DCgqVpYVIeAeBtDnP+p7F2+eVImaHa27S8Gxoob5/xm5VBiOTYmsW4qYIvuGtn+J
+XwqWHWC/UaOz6VUX3oFkwQ0luIw7IQc7M/bma1dx9u4dnLe+wNTl69xZheoYkwYI
++MrvVf5qFs8pHw7RyT5HryHEvGD00jcCgJMgOhjZNcQN2QclXZmD2ZXRVonKCzd/
+07AvngyUvYNJMGk1SUJ2ZP1RpSX01mluRx+0F8DHSCECgYkA2gEzcjIk6N7G0dRC
+pLTvo4kusbY4RdGIzJVqB1nPv2DQBd7hVWFnG+g3hiSloQKZqQ8/Pa5TpyjJtEtd
+3L46p2CTHBaOJZuHtopM9p54ltHc/Dd4tUqwNWBi7Bo6nBizlpswZHZRtO6ja/02
+c34OoQGwGfM4/ebXau0VKI+WfpdRHUZz1MwABwJ5AOATRiZb7ObLLj8sDRLX1Cne
+Nz/DyU2tqPJFysDF1TBV1LcHMhTQi0ItvWLdohRa/1ha6OWEQaPHgsHT0OXrt4yl
+4fUxltEdUr75uou9fKJd21He5AupCwFMTdVG7uHHxfFSshERFpYNlmOuzEUmRQgp
+dhGTNEy7iQKBiFPvnHA+cEmc5K4LbLFf3Nh5TBouT5JKL8KdUJqN8Nf9nXp1Kwsl
+mn57NU2XtJG+n40hCrdj9F9q6+ZYEkaYk5q4K0voP0ipjmIw85sMvt9K5CvT68zZ
+eejDOLMxEhnhxNua2tIDYEgqjY9ZieqDwXwqWzRSmkHf7FcF+1yHlGkfN6Lu6lAn
+T2cCeQCFZtQnuCilCqfA0lACPN5CAtrvqncpOM9RVX2tINqYSTE3uh/1xmZyAtsy
+hfKdncNRbeYj5oZRpFDTZnCCwb/oC0Yn/NrmKkf+DJ0j3q7Z13jgGAu6aWx03GGm
+LPHBF3dgAbSjdoH02agENqfEL1F/13dEZVgIqskCgYgXg/hzTgps7fpNOH69mBov
+ocaJQ8SRwcf9aCDLEJ+JobEAt3d50m2G8ysF8ev3fdb3e4KOI68VBOxZ5hCYOyU3
+topDMrznzv8R9YyuCxHO4eYmXzOrEEUrJZ1LfVKdkB8mZodFC5SCSQ4792TfxeKc
+0kF2QV8JqMTlRy4+hIxfPLl7UEZeXxt/
+-----END PRIVATE KEY-----
+`
 
 export default {
   name: 'PageIndex',
@@ -92,13 +146,58 @@ export default {
       let data = await getTransactionsAsDataBuyer(this.account)
       data = data.map(v => ({
         ...v,
-        result: JSON.parse(v.result),
+        prikey,
       }))
+
+      data = data.map(v => {
+        try {
+          return {
+            ...v,
+            result: JSON.parse(v.result),
+          }
+        } catch (error) {
+          // try privkey
+          try {
+            const result = decrypt(v.result, v.prikey)
+            return { ...v, result: JSON.parse(result) }
+          } catch (error) {
+            return {
+              ...v,
+              result: {
+                result: '未解密',
+              },
+            }
+          }
+        }
+      })
+      data = data.map(v => {
+        if (v.result.resultType === '中位数') return v
+        else
+          return {
+            ...v,
+            result: {
+              ...v.result,
+              resultType: `${v.result.resultType}:${v.result.query}`,
+            },
+          }
+      })
       this.data = data.reverse()
     },
     toggleFAB: async function() {
       this.update()
       this.on = !this.on
+    },
+    print: function(index) {
+      this.prikeyPrompt = true
+      this.pro = index
+      this.prikey = this.data[index].prikey
+    },
+    closePrompt: function() {
+      this.prikeyPrompt = false
+      this.data[this.pro].prikey = this.prikey
+    },
+    autofillprikey() {
+      this.prikey = prikey
     },
   },
   data: () => ({
@@ -150,7 +249,7 @@ export default {
         field: row => row.result.queryType,
         align: 'center',
         classes: 'text-accent',
-        headerClasses: 'bg-purple-3'
+        headerClasses: 'bg-purple-3',
       },
       {
         name: 'resultType',
@@ -158,7 +257,7 @@ export default {
         field: row => row.result.resultType,
         align: 'center',
         classes: 'text-accent',
-        headerClasses: 'bg-purple-3'
+        headerClasses: 'bg-purple-3',
       },
       {
         name: 'resultresult',
@@ -166,12 +265,15 @@ export default {
         field: row => row.result.result,
         align: 'center',
         classes: 'text-accent',
-        headerClasses: 'bg-purple-3'
+        headerClasses: 'bg-purple-3',
       },
       { name: 'transactions', label: 'details', field: 'transactions' },
     ],
     on: false,
     data: [],
+    prikeyPrompt: false,
+    prikey: null,
+    pro: null,
   }),
   async mounted() {
     console.log(this.account)

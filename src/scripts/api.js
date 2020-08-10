@@ -8,10 +8,7 @@
 
 import abi from './abi'
 import JSEncrypt from 'encryptlong'
-// const abi = require('./abi.js')
-// const NodeRSA = require('node-rsa')
-// let fs = require('fs')
-// let Tx = require('ethereumjs-tx')
+
 window.JSEncrypt = JSEncrypt
 
 async function createNewTransaction(
@@ -63,7 +60,7 @@ async function createNewTransaction(
       from: account,
       // 'nonce' : web3.eth.getTransactionCount(this.account.address),
     })
-    .on('receipt', ()=>{})
+    .on('receipt', () => {})
     .on('error', onfail)
   await contract.methods
     .bid(tran._address)
@@ -118,4 +115,10 @@ async function uploadNewData(
   return tran.transactionHash
 }
 
-export default { createNewTransaction, uploadNewData }
+function decrypt(encData, prikey) {
+  const decrypt = new JSEncrypt()
+  decrypt.setPrivateKey(prikey)
+  return decrypt.decrypt(encData)
+}
+
+export default { createNewTransaction, uploadNewData, decrypt }
