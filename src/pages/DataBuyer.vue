@@ -100,7 +100,8 @@
 <script>
 import CreateTransaction from 'src/components/CreateTransaction'
 import { getTransactionsAsDataBuyer } from 'src/scripts/eth'
-import { decrypt } from 'src/scripts/api'
+import { decryptData } from 'src/scripts/api'
+
 
 const prikey = `-----BEGIN PRIVATE KEY-----
 MIIExAIBADANBgkqhkiG9w0BAQEFAASCBK4wggSqAgEAAoIBAQC+0XbXu+EMGN9P
@@ -143,6 +144,7 @@ export default {
   },
   methods: {
     async update() {
+
       let data = await getTransactionsAsDataBuyer(this.account)
       data = data.map(v => ({
         ...v,
@@ -157,10 +159,13 @@ export default {
           }
         } catch (error) {
           // try privkey
+          console.error(error)
           try {
-            const result = decrypt(v.result, v.prikey)
+            const result = decryptData(v.result, v.prikey)
+            console.log('result:', result)
             return { ...v, result: JSON.parse(result) }
           } catch (error) {
+          console.error(error)
             return {
               ...v,
               result: {

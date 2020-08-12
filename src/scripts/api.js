@@ -36,7 +36,7 @@ async function createNewTransaction(
         gas: 1500000,
         gasPrice: '30000000000',
       },
-      function(error, transactionHash) {
+      function (error, transactionHash) {
         console.log(error)
       }
     )
@@ -60,7 +60,7 @@ async function createNewTransaction(
       from: account,
       // 'nonce' : web3.eth.getTransactionCount(this.account.address),
     })
-    .on('receipt', () => {})
+    .on('receipt', () => { })
     .on('error', onfail)
   await contract.methods
     .bid(tran._address)
@@ -115,10 +115,23 @@ async function uploadNewData(
   return tran.transactionHash
 }
 
-function decrypt(encData, prikey) {
+const decryptData = (encData, prikey) => {
+  console.log('decrypt Data', encData, prikey)
   const decrypt = new JSEncrypt()
-  decrypt.setPrivateKey(prikey)
-  return decrypt.decrypt(encData)
+  const hexToBase64 = (hexstring) => {
+    return btoa(hexstring.match(/\w{2}/g).map(function (a) {
+      return String.fromCharCode(parseInt(a, 16));
+    }).join(""));
+  }
+  console.log(decrypt)
+  decrypt.setKey(prikey)
+  console.log(decrypt)
+  const text = decrypt.decrypt(hexToBase64(encData))
+  console.log(decrypt)
+  console.log('result:', text)
+  return text
 }
 
-export default { createNewTransaction, uploadNewData, decrypt }
+export { decryptData };
+
+export default { createNewTransaction, uploadNewData }

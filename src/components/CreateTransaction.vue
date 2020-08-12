@@ -86,6 +86,7 @@ export default {
     create() {
       this.loading = true
       const onsuccess = receipt => {
+        console.log('createTransaction 第三笔交易完成')
         console.log(receipt)
         this.loading = false
         this.finish = true
