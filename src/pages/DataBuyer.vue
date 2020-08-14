@@ -151,7 +151,7 @@ export default {
         prikey,
       }))
 
-      data = data.map(v => ({...v, date: new Date(v.date).toLocaleDateString()}))
+      data = data.map(v => ({...v, date: new Date(v.date).toLocaleString()}))
       data = data.map(v => {
         try {
           return {

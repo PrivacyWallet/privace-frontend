@@ -145,7 +145,7 @@ export default {
   methods: {
     update: async function() {
       let data = await getTransactionsAsDataOwner(this.account)
-      data = data.map(v => ({...v, date: new Date(v.date).toLocaleDateString()}))
+      data = data.map(v => ({...v, date: new Date(v.date).toLocaleString()}))
       this.transactionsHistory = data.reverse()
 
       data = await getData(this.account)
