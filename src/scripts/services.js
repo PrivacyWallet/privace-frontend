@@ -37,6 +37,12 @@ async function getCalculators() {
   return data.map(v => v.calculator)
 }
 
+async function addCalculator(calculator) {
+  await axios.post('/addCalculator', {
+    calculator,
+  })
+}
+
 function setData(id, price, epsilon, calculatorContract, address) {
   return axios.post('/setData', {
     id,
@@ -63,6 +69,7 @@ export default {
   getTransactionsAsDataBuyer,
   getTransactionsAsDataOwner,
   getCalculators,
+  addCalculator,
   setData,
   getData,
 }
