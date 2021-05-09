@@ -168,7 +168,9 @@ async function setData(
 /**
  * 增加新的外包计算者
  */
-function addCalculator(address: String): void {}
+async function addCalculator(address: String): Promise<any> {
+  await services.addCalculator(address);
+}
 /**
  * 获得所有的外包计算者
  */
